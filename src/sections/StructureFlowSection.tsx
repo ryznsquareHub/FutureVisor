@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, type SyntheticEvent } from 'react'
 
 const pillars = [
   {
@@ -47,6 +47,26 @@ const flowCards = [
     icon: '/assets/5주단위모듈형.png',
   },
 ]
+
+/**
+ * Figma: 기능 구조 하단 FutureVisor 카드 (node 1211-4218)
+ * https://www.figma.com/design/hf1fGyJXjIGg6IdWwFvaRt/Untitled?node-id=1211-4218
+ *
+ * 로켓: 그라디언트 스쿼클 + 흰 stroke SVG(Figma와 동일 분리). 워드마크: logobig.png.
+ */
+const FV_SUMMARY_ROCKET_SVG = '/assets/fv-summary-rocket.svg'
+const FV_SUMMARY_ROCKET_PNG = '/assets/rocket.png'
+const FV_SUMMARY_WORDMARK_PNG = '/assets/logobig.png'
+const FV_SUMMARY_WORDMARK_FALLBACK = '/assets/logo.png'
+
+const fvSummaryChips = ['All-in-One', '맞춤형 개발', 'End-to-End'] as const
+
+function imgFallbackOnce(e: SyntheticEvent<HTMLImageElement>, fallbackSrc: string) {
+  const el = e.currentTarget
+  if (el.dataset.fallbackApplied === 'true') return
+  el.dataset.fallbackApplied = 'true'
+  el.src = fallbackSrc
+}
 
 export function StructureFlowSection() {
   return (
@@ -129,32 +149,70 @@ export function StructureFlowSection() {
               </div>
             ))}
           </div>
-          <p className="mt-12 text-center text-3xl font-light text-slate-400">=</p>
-          <div className="mx-auto mt-8 max-w-3xl rounded-3xl border border-brand-200 bg-gradient-to-b from-brand-500/10 to-white p-10 text-center shadow-sm">
-            <p className="text-2xl font-bold text-slate-900 md:text-3xl">FutureVisor</p>
-            <p className="mt-3 text-slate-600">모든 기능을 통합한 기업 맞춤형 자동화 플랫폼</p>
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {['All-in-One', '맞춤형 개발', 'End-to-End'].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-700"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-            <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-              <div>
-                <p className="text-3xl font-bold text-brand-600">4+</p>
-                <p className="text-xs text-slate-500">통합 기능</p>
+          <div className="relative mt-14 overflow-visible rounded-t-[28px] border-x border-t border-[#f1f5f9] bg-white md:mt-16 md:rounded-t-[56px]">
+            <div className="mx-auto max-w-[475px] px-6 pb-12 pt-14 text-center md:px-8 md:pb-16 md:pt-16">
+              <div className="mx-auto flex justify-center">
+                <div className="-mt-10 flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-[21px] bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 shadow-[0px_25px_50px_0px_rgba(0,0,0,0.25)] sm:h-[100px] sm:w-[100px] md:-mt-12 md:h-[106px] md:w-[106px]">
+                  <img
+                    src={FV_SUMMARY_ROCKET_SVG}
+                    alt=""
+                    width={53}
+                    height={53}
+                    className="h-9 w-9 sm:h-11 sm:w-11 md:h-[53px] md:w-[53px]"
+                    decoding="async"
+                    onError={(e) => imgFallbackOnce(e, FV_SUMMARY_ROCKET_PNG)}
+                  />
+                </div>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-brand-600">1</p>
-                <p className="text-xs text-slate-500">플랫폼</p>
+              <div className="mx-auto mt-6 inline-block max-w-full md:mt-7">
+                <img
+                  src={FV_SUMMARY_WORDMARK_PNG}
+                  alt="FutureVisor"
+                  width={320}
+                  height={64}
+                  className="mx-auto h-10 w-auto max-w-full md:h-12"
+                  decoding="async"
+                  onError={(e) => imgFallbackOnce(e, FV_SUMMARY_WORDMARK_FALLBACK)}
+                />
+                <div
+                  className="mx-auto mt-4 h-0.5 max-w-[162px] rounded-full bg-gradient-to-r from-transparent via-brand-500/60 to-transparent opacity-70"
+                  aria-hidden
+                />
               </div>
-              <div>
-                <p className="text-3xl font-bold text-brand-600">∞</p>
-                <p className="text-xs text-slate-500">가능성</p>
+              <p className="mx-auto mt-6 max-w-[28rem] text-center text-[1.125rem] font-semibold leading-snug tracking-tight text-slate-ink sm:text-[1.25rem] md:mt-7 md:text-[26px] md:leading-[1.35]">
+                모든 기능을 통합한 기업 맞춤형 자동화 플랫폼
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-2 md:mt-9 md:gap-3">
+                {fvSummaryChips.map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-brand-500/30 bg-gradient-to-r from-brand-500/10 to-[#1787ff]/10 px-5 py-2 text-[14px] font-bold leading-none text-brand-700 sm:text-[15px]"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-8 md:mt-9">
+                <div className="grid grid-cols-3 gap-2 text-center sm:gap-6 md:gap-8">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
+                      4+
+                    </p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">통합 기능</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-1.5">
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
+                      1
+                    </p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">플랫폼</p>
+                  </div>
+                  <div className="flex flex-col items-center gap-1.5">
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
+                      ∞
+                    </p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">가능성</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
