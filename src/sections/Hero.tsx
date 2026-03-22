@@ -63,7 +63,7 @@ export function Hero() {
                 }`}
                 aria-hidden={i !== active}
               >
-                <span className="inline-block whitespace-nowrap text-center text-[2rem] underline decoration-white/40 decoration-2 underline-offset-8 sm:text-[2.5rem] md:text-[4rem] lg:text-[96px] lg:underline-offset-[0.2em]">
+                <span className="inline-block whitespace-nowrap text-center text-[2rem] underline decoration-white/40 decoration-2 underline-offset-8 sm:text-4xl sm:underline-offset-[0.2em] md:text-6xl lg:text-[84px]">
                   {line}
                 </span>
               </span>
