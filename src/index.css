@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+  --color-brand-500: #0040ff;
+  --color-brand-600: #0035dd;
+  --color-brand-700: #0028bb;
+  --color-slate-ink: #314158;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-slate-ink);
+  background: #fff;
+}
