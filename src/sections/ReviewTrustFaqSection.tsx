@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 const reviews = [
   {
@@ -49,24 +49,124 @@ const trustCards = [
   {
     title: '문서 기반 개발',
     body: '요구정의서·기능정의서·플로우 다이어그램으로 구조를 투명하게 공유합니다.',
+    icon: '/assets/문서기반개발.png',
   },
   {
     title: '대기업 PM 경험',
     body: '삼성전자·현대차 등 대기업 프로젝트 경험이 있는 PM이 직접 진행합니다.',
+    icon: '/assets/커스텀시스템.png',
   },
   {
     title: '체계적 QA/배포',
     body: '개발 후 QA와 안정적 배포를 통해 문제를 최소화합니다.',
+    icon: '/assets/통합워크플로우.png',
   },
 ]
 
-const faqs = [
-  'FutureVisor는 어떤 서비스인가요?',
-  'Zapier나 Make 같은 자동화 툴과 무엇이 다른가요?',
-  '어떤 회사에 적합한 서비스인가요?',
-  '프로젝트는 어떤 방식으로 진행되나요?',
-  '프로젝트 최소 비용은 어떻게 되나요?',
-  '우리 회사도 자동화가 가능한지 먼저 확인할 수 있나요?',
+type FaqItem = {
+  question: string
+  answer: ReactNode
+}
+
+const faqs: FaqItem[] = [
+  {
+    question: 'FutureVisor는 어떤 서비스인가요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p>FutureVisor는 단순 자동화 툴이나 외주 개발이 아니라,</p>
+        <p className="font-bold text-slate-900">
+          기업의 핵심 업무 흐름을 분석하고, 5주 단위로 단계적으로 자동화·시스템화하는 기업 맞춤형 자동화·운영 시스템 구축 서비스입니다.
+        </p>
+        <p>
+          ERP, CRM, 재고·정산·보고 등 회사 운영에 직접 영향을 주는 업무를 기업 프로세스에 맞게 설계·개발합니다.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: 'Zapier나 Make 같은 자동화 툴과 무엇이 다른가요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p>Zapier/Make는 앱을 연결하는 자동화 툴이고,</p>
+        <p className="font-bold text-slate-900">
+          FutureVisor는 기업 업무 프로세스 자체를 설계·개발하는 서비스입니다.
+        </p>
+        <ul className="list-disc space-y-1.5 pl-5">
+          <li>기업 고유 로직 100% 반영</li>
+          <li>대량 데이터·복잡한 분기 처리</li>
+          <li>국내 API(카카오, 토스 등) 연동</li>
+          <li>전용 서버·DB 기반 보안 구조</li>
+        </ul>
+        <p className="font-bold text-slate-900">
+          등 ERP/CRM 수준의 로직 구현이 가능하다는 점이 가장 큰 차이입니다.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: '어떤 회사에 적합한 서비스인가요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p>FutureVisor는 아래와 같은 기업에 가장 적합합니다.</p>
+        <ul className="list-disc space-y-1.5 pl-5">
+          <li>
+            직원 <span className="font-bold text-slate-900">5~100명 규모</span>의 중소·중견기업
+          </li>
+          <li>업무가 엑셀·카톡·메일·수기로 운영되는 회사</li>
+          <li>ERP/CRM이 우리 회사 방식과 맞지 않는 조직</li>
+          <li>내부 개발팀이 없거나 매우 소규모인 회사</li>
+        </ul>
+        <p>개인 프로젝트나 단순 자동화 목적에는 적합하지 않습니다.</p>
+      </div>
+    ),
+  },
+  {
+    question: '프로젝트는 어떤 방식으로 진행되나요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p className="font-bold text-slate-900">FutureVisor 프로젝트는 5주 단위(1사이클)로 운영됩니다.</p>
+        <p>
+          각 사이클은{' '}
+          <span className="font-bold text-slate-900">업무 분석 → 설계 → 개발 → QA → 개선</span>
+          {` 단계를 포함하며, `}
+          보통 1~5사이클 범위에서 기업 상황에 맞게 진행됩니다.
+        </p>
+        <p>
+          전사 시스템을 한 번에 만드는 방식이 아니라,{' '}
+          <span className="font-bold text-slate-900">핵심 모듈부터 단계적으로 확장</span>
+          하는 구조입니다.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: '프로젝트 최소 비용은 어떻게 되나요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p>FutureVisor는 단순 제작이 아닌</p>
+        <p className="font-bold text-slate-900">
+          업무 분석 + 자동화 설계 기반의 맞춤형 시스템 구축을 진행합니다.
+        </p>
+        <p>
+          프로젝트는 <span className="font-bold text-slate-900">1사이클 기준 1,000만원부터</span> 시작되며,
+          이는 품질, 운영 안정성, 지속 가능한 유지보수를 위한 최소 기준입니다.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: '우리 회사도 자동화가 가능한지 먼저 확인할 수 있나요?',
+    answer: (
+      <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
+        <p>네.</p>
+        <p>
+          FutureVisor에서는 <span className="font-bold text-slate-900">자동화 가능성 체크</span>와
+          <span className="font-bold text-slate-900"> 유료 업무 진단(컨설팅)</span>을 통해 귀사에 적합한
+          자동화 범위와 방향을 먼저 제안드립니다.
+        </p>
+      </div>
+    ),
+  },
 ]
 
 function Stars() {
@@ -149,15 +249,16 @@ export function ReviewTrustFaqSection() {
             <div className="grid gap-px md:grid-cols-3">
             {trustCards.map((c) => (
               <div key={c.title} className="bg-white p-8">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.75}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
+                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/60">
+                  <img
+                    src={c.icon}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover object-center"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-slate-900">{c.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{c.body}</p>
@@ -167,30 +268,57 @@ export function ReviewTrustFaqSection() {
           </div>
         </div>
       </section>
-      <section className="bg-gradient-to-b from-blue-50/60 via-white to-white py-24 md:py-32">
+      <section className="bg-gradient-to-b from-blue-50/50 via-white to-white py-24 md:py-32">
         <div className="mx-auto max-w-[900px] px-6">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">자주 묻는 질문</h2>
-            <p className="mt-4 text-slate-600">FutureVisor에 대해 궁금하신 점을 확인해보세요</p>
+            <p className="mt-4 text-lg text-slate-600">
+              FutureVisor에 대해 궁금하신 점을 확인해보세요
+            </p>
           </div>
-          <div className="mt-10 space-y-3">
-            {faqs.map((q, i) => {
+          <div className="mt-10 overflow-hidden rounded-[14px] border border-slate-200 bg-white">
+            {faqs.map((item, i) => {
               const open = openFaq === i
+              const headingId = `faq-q-${i}`
+              const panelId = `faq-a-${i}`
               return (
-                <button
-                  key={q}
-                  type="button"
-                  onClick={() => setOpenFaq(open ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 rounded-[14px] border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition hover:bg-slate-50/80"
+                <div
+                  key={item.question}
+                  className="border-b border-slate-200 px-6 py-5 last:border-b-0"
                 >
-                  <span className="font-medium text-slate-900">{q}</span>
-                  <span
-                    className={`text-slate-400 transition ${open ? 'rotate-180' : ''}`}
-                    aria-hidden
+                  <button
+                    type="button"
+                    id={headingId}
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    onClick={() => setOpenFaq(open ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 text-left"
                   >
-                    ▼
-                  </span>
-                </button>
+                    <span className="text-[21px] font-bold leading-7 text-slate-900">{item.question}</span>
+                    <span className="shrink-0 transition-opacity duration-200" aria-hidden>
+                      <img
+                        src={open ? '/assets/arrowup.png' : '/assets/arrowdown.png'}
+                        alt=""
+                        width={21}
+                        height={21}
+                        className="h-[21px] w-[21px] object-contain"
+                        decoding="async"
+                      />
+                    </span>
+                  </button>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={headingId}
+                    className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
+                      open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                    }`}
+                  >
+                    <div className="min-h-0 overflow-hidden">
+                      <div className="pt-4 text-left">{item.answer}</div>
+                    </div>
+                  </div>
+                </div>
               )
             })}
           </div>
