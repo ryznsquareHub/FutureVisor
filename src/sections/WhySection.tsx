@@ -1,15 +1,8 @@
 import type { ReactNode } from 'react'
 
-function CardIcon({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
-      {children}
-    </div>
-  )
-}
-
-const painPoints = [
+const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string }[] = [
   {
+    key: 'scattered-tools',
     title: (
       <>
         엑셀·카톡·구글시트에
@@ -18,18 +11,10 @@ const painPoints = [
       </>
     ),
     body: '반복 입력과 중복 기록으로 시간이 새어 나가고, 인수인계와 관리가 점점 어려워집니다.',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M4 6h16M4 12h10M4 18h16"
-        />
-      </svg>
-    ),
+    iconSrc: '/assets/엑셀카톡구글시트.png',
   },
   {
+    key: 'erp-mismatch',
     title: (
       <>
         ERP/CRM이
@@ -38,18 +23,10 @@ const painPoints = [
       </>
     ),
     body: '시스템을 도입했지만 40~60%는 여전히 수기로 처리하며 실무자의 부담이 남아 있습니다.',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M9 12h6m-6 4h6M7 8h10M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-        />
-      </svg>
-    ),
+    iconSrc: '/assets/erpcrm이.png',
   },
   {
+    key: 'nocode-limits',
     title: (
       <>
         노코드 자동화의
@@ -58,16 +35,7 @@ const painPoints = [
       </>
     ),
     body: '승인·분기·재고·정산 같은 복잡한 로직은 Zapier/Make만으로는 구현이 어렵습니다.',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M13 10V3L4 14h7v7l9-11h-7z"
-        />
-      </svg>
-    ),
+    iconSrc: '/assets/노코드자동화의.png',
   },
 ]
 
@@ -87,11 +55,21 @@ export function WhySection() {
           <div className="mt-16 grid gap-6 md:grid-cols-3">
             {painPoints.map((item) => (
               <div
-                key={String(item.title)}
-                className="rounded-[14px] border border-slate-100 bg-slate-50 p-9"
+                key={item.key}
+                className="rounded-2xl border border-slate-200 bg-white p-9 shadow-sm"
               >
-                <CardIcon>{item.icon}</CardIcon>
-                <h3 className="mt-6 text-lg font-semibold text-slate-900 md:text-xl">{item.title}</h3>
+                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/60">
+                  <img
+                    src={item.iconSrc}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover object-center"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <h3 className="mt-6 text-lg font-bold text-slate-900 md:text-xl">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600 md:text-[15px]">{item.body}</p>
               </div>
             ))}

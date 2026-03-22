@@ -2,18 +2,22 @@ const features = [
   {
     title: '업무 로직 100% 커스텀',
     body: 'ERP·CRM이 못 담는 승인·분기·정산까지 우리 회사 방식 그대로 구현합니다.',
+    icon: '/assets/업무로직100.png',
   },
   {
     title: '5주 단위 모듈형 구축',
     body: '핵심 업무부터 빠르게 만들고 필요한 만큼 단계적으로 확장합니다.',
+    icon: '/assets/5주단위모듈형.png',
   },
   {
     title: '기업 수준 자동화 처리',
     body: '대량 데이터와 복잡한 비즈니스 로직도 안정적으로 처리합니다.',
+    icon: '/assets/기업수준자동화.png',
   },
   {
     title: '국내 실무 환경 완벽 대응',
     body: '카카오·토스 등 국내 서비스까지 전사 수준으로 연동합니다.',
+    icon: '/assets/국내실무환경.png',
   },
 ]
 
@@ -56,11 +60,12 @@ export function SolutionSection() {
       <section id="solution" className="bg-white py-24 md:py-36">
         <div className="mx-auto max-w-[896px] px-6 text-center">
           <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
-            우리 회사 프로세스 그대로
-            <br />
-            작동하는{' '}
-            <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
-              맞춤형 자동화툴
+            <span className="block">우리 회사 방식은 그대로</span>
+            <span className="mt-1 block md:mt-0">
+              작동하는{' '}
+              <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
+                맞춤형 자동화
+              </span>
             </span>
           </h2>
           <p className="mx-auto mt-8 max-w-3xl text-lg text-slate-600 md:text-xl">
@@ -70,17 +75,23 @@ export function SolutionSection() {
         <div className="mx-auto mt-16 max-w-[1288px] px-6 lg:px-8">
           <div className="overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
             <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f) => (
-            <div key={f.title} className="bg-white p-7">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-600 shadow-sm">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-slate-900">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.body}</p>
-            </div>
-          ))}
+              {features.map((f) => (
+                <div key={f.title} className="bg-white p-7">
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/60">
+                    <img
+                      src={f.icon}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="h-full w-full object-cover object-center"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <h3 className="mt-5 text-lg font-bold text-slate-900">{f.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.body}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

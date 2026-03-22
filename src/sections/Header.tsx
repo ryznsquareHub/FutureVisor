@@ -8,11 +8,15 @@ const nav = [
 
 function Logo() {
   return (
-    <a href="#" className="flex items-center gap-1 text-xl font-bold tracking-tight">
-      <span className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-transparent">
-        Future
-      </span>
-      <span className="text-slate-ink">Visor</span>
+    <a href="#" className="flex items-center">
+      <img
+        src="/assets/logo.png"
+        alt="FutureVisor"
+        width={168}
+        height={28}
+        className="h-7 w-auto md:h-8"
+        decoding="async"
+      />
     </a>
   )
 }

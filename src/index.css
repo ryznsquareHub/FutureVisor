@@ -43,3 +43,24 @@ body {
     animation: none;
   }
 }
+
+@keyframes portfolio-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.portfolio-slide-panel {
+  animation: portfolio-slide-in 0.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-slide-panel {
+    animation: none;
+  }
+}

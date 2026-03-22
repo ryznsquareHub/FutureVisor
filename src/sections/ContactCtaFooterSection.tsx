@@ -1,7 +1,19 @@
 const services = [
-  { title: '업무 자동화', desc: '반복 업무 완전 자동화' },
-  { title: '커스텀 시스템', desc: '맞춤형 ERP/CRM 구축' },
-  { title: '통합 워크플로우', desc: '여러 툴 완벽 연동' },
+  {
+    title: '업무 자동화',
+    desc: '반복 업무 완전 자동화',
+    icon: '/assets/업무자동화.png',
+  },
+  {
+    title: '커스텀 시스템',
+    desc: '맞춤형 ERP/CRM 구축',
+    icon: '/assets/커스텀시스템.png',
+  },
+  {
+    title: '통합 워크플로우',
+    desc: '여러 툴 완벽 연동',
+    icon: '/assets/통합워크플로우.png',
+  },
 ]
 
 export function ContactCtaFooterSection() {
@@ -12,8 +24,14 @@ export function ContactCtaFooterSection() {
           <div className="overflow-hidden rounded-[21px] bg-white shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] lg:grid lg:grid-cols-[minmax(0,368px)_1fr]">
             <div className="bg-gradient-to-b from-white to-blue-100 p-10 md:p-14">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
-              FutureVisor
-              <br />
+              <img
+                src="/assets/logo.png"
+                alt="FutureVisor"
+                width={200}
+                height={34}
+                className="mb-4 block h-9 w-auto md:mb-5 md:h-10"
+                decoding="async"
+              />
               전문 개발팀에
               <br />
               의뢰하세요
@@ -24,10 +42,16 @@ export function ContactCtaFooterSection() {
                   key={s.title}
                   className="flex gap-4 rounded-[14px] border border-slate-200/60 bg-white p-5"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 to-[#1787ff] text-white shadow-sm">
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 13l4 4L19 7" />
-                    </svg>
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl shadow-sm ring-1 ring-slate-200/60">
+                    <img
+                      src={s.icon}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="h-full w-full object-cover object-center"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                   <div>
                     <p className="font-semibold text-slate-900">{s.title}</p>
@@ -141,11 +165,15 @@ export function ContactCtaFooterSection() {
       <footer className="border-t border-[#1d293d] bg-[#0f172b] py-12">
         <div className="mx-auto flex max-w-[1288px] flex-col items-center justify-between gap-6 px-6 md:flex-row lg:px-8">
           <div>
-            <p className="text-lg font-bold">
-              <span className="text-brand-500">Future</span>
-              <span className="text-white">Visor</span>
-            </p>
-            <p className="mt-2 text-sm text-slate-400">© 2025 FutureVisor. All rights reserved.</p>
+            <img
+              src="/assets/logo.png"
+              alt="FutureVisor"
+              width={152}
+              height={26}
+              className="h-6 w-auto opacity-95"
+              decoding="async"
+            />
+            <p className="mt-3 text-sm text-slate-400">© 2025 FutureVisor. All rights reserved.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-400">
             <a href="#" className="transition hover:text-white">

@@ -156,18 +156,14 @@ export function ProcessPortfolioSection() {
               type="button"
               onClick={goPrev}
               aria-label="이전 포트폴리오 사례"
-              className={
-                isDark
-                  ? 'flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/25 transition hover:bg-white/15'
-                  : 'flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-700 shadow-md ring-1 ring-slate-200/80 transition hover:bg-slate-50'
-              }
+              className="flex items-center justify-center rounded-lg bg-transparent p-3 transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
             >
               <img
                 src="/assets/arrowup.png"
                 alt=""
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
                 decoding="async"
               />
             </button>
@@ -278,18 +274,14 @@ export function ProcessPortfolioSection() {
               type="button"
               onClick={goNext}
               aria-label="다음 포트폴리오 사례"
-              className={
-                isDark
-                  ? 'flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/25 transition hover:bg-white/15'
-                  : 'flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-700 shadow-md ring-1 ring-slate-200/80 transition hover:bg-slate-50'
-              }
+              className="flex items-center justify-center rounded-lg bg-transparent p-3 transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
             >
               <img
                 src="/assets/arrowdown.png"
                 alt=""
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
                 decoding="async"
               />
             </button>
