@@ -331,9 +331,12 @@ export function ReviewTrustFaqSection() {
                     className="flex w-full items-center justify-between gap-4 text-left"
                   >
                     <span className="text-[21px] font-bold leading-7 text-slate-900">{item.question}</span>
-                    <span className="shrink-0 transition-opacity duration-200" aria-hidden>
+                    <span
+                      className={`inline-flex shrink-0 transition-transform duration-200 ease-out motion-reduce:transition-none ${open ? '-rotate-180' : ''}`}
+                      aria-hidden
+                    >
                       <img
-                        src={open ? '/assets/arrowup.png' : '/assets/arrowdown.png'}
+                        src="/assets/arrowIcon.svg"
                         alt=""
                         width={21}
                         height={21}

@@ -42,7 +42,7 @@ const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string
 export function WhySection() {
   return (
     <>
-      <section id="why" className="bg-white py-24 md:py-36">
+      <section id="why" className="bg-white pt-24 pb-0 md:pt-36">
         <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
