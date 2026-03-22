@@ -88,7 +88,7 @@ export function WhySection() {
             {painPoints.map((item) => (
               <div
                 key={String(item.title)}
-                className="rounded-2xl bg-[#F7F8FA] p-9"
+                className="rounded-[14px] border border-slate-100 bg-slate-50 p-9"
               >
                 <CardIcon>{item.icon}</CardIcon>
                 <h3 className="mt-6 text-lg font-semibold text-slate-900 md:text-xl">{item.title}</h3>
@@ -108,18 +108,6 @@ export function WhySection() {
               />
             </div>
           </div>
-        </div>
-      </section>
-      <section className="border-y border-slate-100 bg-white py-20 md:py-28">
-        <div className="mx-auto max-w-[896px] px-6 text-center">
-          <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
-            반복 업무 때문에 시간에 쫓겨
-            <br />
-            중요한 일을 못하고 있지는 않나요?
-          </h2>
-          <p className="mt-8 text-lg text-slate-600 md:text-xl">
-            반복 업무는 시스템에 맡기고, 사람은 더 중요한 일에 집중하세요.
-          </p>
         </div>
       </section>
     </>

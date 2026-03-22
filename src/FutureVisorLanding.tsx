@@ -1,5 +1,6 @@
 import { Header } from './sections/Header'
 import { Hero } from './sections/Hero'
+import { TransitionSection } from './sections/TransitionSection'
 import { WhySection } from './sections/WhySection'
 import { SolutionSection } from './sections/SolutionSection'
 import { StructureFlowSection } from './sections/StructureFlowSection'
@@ -14,6 +15,7 @@ export function FutureVisorLanding() {
       <main>
         <Hero />
         <WhySection />
+        <TransitionSection />
         <SolutionSection />
         <StructureFlowSection />
         <ProcessPortfolioSection />

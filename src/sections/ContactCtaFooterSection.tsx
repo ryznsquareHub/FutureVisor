@@ -7,9 +7,10 @@ const services = [
 export function ContactCtaFooterSection() {
   return (
     <>
-      <section id="contact" className="bg-slate-50 py-24 md:py-32">
-        <div className="mx-auto grid max-w-[1288px] gap-12 px-6 lg:grid-cols-[minmax(0,368px)_1fr] lg:px-8">
-          <div className="rounded-3xl border border-slate-200 bg-white p-10 shadow-sm">
+      <section id="contact" className="bg-[#0f172b] py-24 md:py-32">
+        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+          <div className="overflow-hidden rounded-[21px] bg-white shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] lg:grid lg:grid-cols-[minmax(0,368px)_1fr]">
+            <div className="bg-gradient-to-b from-white to-blue-100 p-10 md:p-14">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
               FutureVisor
               <br />
@@ -19,8 +20,11 @@ export function ContactCtaFooterSection() {
             </h2>
             <div className="mt-12 space-y-6">
               {services.map((s) => (
-                <div key={s.title} className="flex gap-4 rounded-2xl bg-slate-50 p-5">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 shadow-sm">
+                <div
+                  key={s.title}
+                  className="flex gap-4 rounded-[14px] border border-slate-200/60 bg-white p-5"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 to-[#1787ff] text-white shadow-sm">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 13l4 4L19 7" />
                     </svg>
@@ -32,8 +36,8 @@ export function ContactCtaFooterSection() {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm md:p-12">
+            </div>
+          <div className="border-t border-slate-200 bg-white p-8 md:border-t-0 md:border-l md:p-12">
             <h3 className="text-2xl font-semibold text-slate-900 md:text-3xl">
               어떤 업무를 자동화하고
               <br />
@@ -99,10 +103,13 @@ export function ContactCtaFooterSection() {
               </button>
             </form>
           </div>
+          </div>
         </div>
       </section>
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 py-24 md:py-32">
-        <div className="relative z-10 mx-auto max-w-[900px] px-6 text-center text-white">
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[14px] bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 px-6 py-16 shadow-[0px_25px_50px_-12px_rgba(0,64,255,0.3)] md:px-12 md:py-20">
+        <div className="relative z-10 mx-auto max-w-[900px] text-center text-white">
           <h2 className="text-3xl font-bold leading-tight md:text-5xl md:leading-tight">
             우리 회사 업무,
             <br />
@@ -128,24 +135,26 @@ export function ContactCtaFooterSection() {
             </button>
           </div>
         </div>
+        </div>
+        </div>
       </section>
-      <footer className="border-t border-slate-100 bg-white py-12">
+      <footer className="border-t border-[#1d293d] bg-[#0f172b] py-12">
         <div className="mx-auto flex max-w-[1288px] flex-col items-center justify-between gap-6 px-6 md:flex-row lg:px-8">
           <div>
             <p className="text-lg font-bold">
-              <span className="text-brand-600">Future</span>
-              <span className="text-slate-900">Visor</span>
+              <span className="text-brand-500">Future</span>
+              <span className="text-white">Visor</span>
             </p>
-            <p className="mt-2 text-sm text-slate-500">© 2025 FutureVisor. All rights reserved.</p>
+            <p className="mt-2 text-sm text-slate-400">© 2025 FutureVisor. All rights reserved.</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-600">
-            <a href="#" className="hover:text-brand-600">
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-400">
+            <a href="#" className="transition hover:text-white">
               이용약관
             </a>
-            <a href="#" className="hover:text-brand-600">
+            <a href="#" className="transition hover:text-white">
               개인정보처리방침
             </a>
-            <a href="#contact" className="hover:text-brand-600">
+            <a href="#contact" className="transition hover:text-white">
               문의하기
             </a>
           </div>

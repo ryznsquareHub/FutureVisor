@@ -66,26 +66,27 @@ export function ProcessPortfolioSection() {
           </div>
         </div>
       </section>
-      <section id="portfolio" className="bg-slate-50 py-20 md:py-28">
+      <section id="portfolio" className="bg-[#0f172b] pb-20 pt-24 md:pb-28 md:pt-28">
         <div className="mx-auto max-w-[1288px] px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">
+          <h2 className="text-3xl font-bold text-white md:text-5xl">
             실제 기업들은
             <br />
             이렇게 변화했습니다
           </h2>
-          <p className="mt-4 text-slate-600">고객사의 전체 프로세스를 자동화한 사례</p>
+          <p className="mt-4 text-lg text-slate-400">고객사의 전체 프로세스를 자동화한 사례</p>
         </div>
-        <div className="mx-auto mt-12 max-w-[1228px] rounded-3xl border border-slate-200 bg-white px-6 py-10 shadow-sm md:px-14">
+        <div className="mt-12 bg-gradient-to-b from-[#0f172b] to-[#314158] py-16 md:py-20">
+          <div className="mx-auto max-w-[1228px] rounded-[42px] border border-slate-600/50 bg-slate-900/40 px-6 py-10 backdrop-blur-sm md:px-14">
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
             <div className="text-left">
-              <h3 className="text-2xl font-bold text-slate-900 md:text-4xl">테크다스</h3>
-              <p className="mt-2 text-slate-600">테크다스 AI 대기 MES 솔루션</p>
+              <h3 className="text-3xl font-bold text-white md:text-5xl">테크다스</h3>
+              <p className="mt-2 text-xl font-medium text-slate-300">테크다스 AI 대기 MES 솔루션</p>
             </div>
-            <span className="inline-flex self-start rounded-full bg-slate-100 px-6 py-2.5 text-sm font-medium text-slate-700">
+            <span className="inline-flex self-start rounded-full bg-gradient-to-b from-brand-500 to-[#1787ff] px-6 py-2.5 text-sm font-bold text-white">
               제조 실행 시스템
             </span>
           </div>
-          <p className="mt-8 max-w-3xl text-left text-slate-600">
+          <p className="mt-8 max-w-3xl text-left text-slate-400">
             수작업으로 처리하던 재고 관리 업무를 완전 자동화하여 실시간으로 재고 현황을 파악하고, 정확한
             생산 계획 수립이 가능해졌습니다.
           </p>
@@ -93,7 +94,7 @@ export function ProcessPortfolioSection() {
             {[0, 1].map((i) => (
               <div
                 key={i}
-                className="aspect-video overflow-hidden rounded-2xl bg-slate-900 ring-1 ring-slate-200"
+                className="aspect-video overflow-hidden rounded-[14px] border border-slate-600/50 bg-[#1d293d]/30 shadow-lg"
               >
                 <img
                   src="/assets/portfolio-mes.png"
@@ -104,21 +105,28 @@ export function ProcessPortfolioSection() {
               </div>
             ))}
           </div>
-          <div className="mt-10 rounded-2xl border border-slate-100 bg-slate-50 p-8">
-            <p className="flex items-center gap-2 text-sm font-semibold text-brand-600">
-              <span className="h-1 w-1 rounded-full bg-brand-500" />
+          <div
+            className="mt-10 rounded-[14px] border border-slate-600/50 p-10"
+            style={{
+              backgroundImage:
+                'linear-gradient(171.12deg, rgba(29, 41, 61, 0.8) 0%, rgba(15, 23, 43, 0.8) 100%)',
+            }}
+          >
+            <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-white">
+              <span className="h-7 w-1 rounded-full bg-gradient-to-b from-brand-500 to-[#1787ff]" />
               Results
             </p>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {results.map((r) => (
-                <div key={r} className="flex items-center gap-3 text-sm font-medium text-slate-800">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand-600 shadow-sm">
+                <div key={r} className="flex items-center gap-3 text-sm font-semibold text-white">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 to-[#1787ff] text-white shadow-sm">
                     ✓
                   </span>
                   {r}
                 </div>
               ))}
             </div>
+          </div>
           </div>
         </div>
       </section>

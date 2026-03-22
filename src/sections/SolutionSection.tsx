@@ -67,9 +67,11 @@ export function SolutionSection() {
             FutureVisor는 기업 고유 프로세스를 분석·설계·개발·자동화까지 End-to-End로 함께합니다.
           </p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-[1288px] gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+        <div className="mx-auto mt-16 max-w-[1288px] px-6 lg:px-8">
+          <div className="overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
+            <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => (
-            <div key={f.title} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-7">
+            <div key={f.title} className="bg-white p-7">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-brand-600 shadow-sm">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 13l4 4L19 7" />
@@ -79,9 +81,11 @@ export function SolutionSection() {
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.body}</p>
             </div>
           ))}
+            </div>
+          </div>
         </div>
       </section>
-      <section className="bg-slate-50 py-24 md:py-32">
+      <section className="bg-gradient-to-b from-[#f8fbff] to-[#f0f5ff] py-24 md:py-32">
         <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">

@@ -107,7 +107,7 @@ export function StructureFlowSection() {
           </div>
         </div>
       </section>
-      <section className="border-t border-slate-100 bg-slate-50 py-24 md:py-36">
+      <section className="border-t border-slate-100 bg-gradient-to-b from-white to-blue-100 py-24 md:py-36">
         <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">

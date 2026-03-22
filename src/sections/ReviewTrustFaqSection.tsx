@@ -80,7 +80,7 @@ export function ReviewTrustFaqSection() {
 
   return (
     <>
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-gradient-to-b from-white to-blue-100 py-24 md:py-32">
         <div className="mx-auto max-w-[1288px] px-6 text-center lg:px-8">
           <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">고객사의 성공 이야기</h2>
           <p className="mt-4 text-slate-600">
@@ -92,7 +92,7 @@ export function ReviewTrustFaqSection() {
             {reviews.map((r) => (
               <article
                 key={r.name}
-                className="w-[min(100vw-3rem,400px)] shrink-0 rounded-2xl border border-slate-200 bg-slate-50 p-7"
+                className="w-[min(100vw-3rem,400px)] shrink-0 rounded-[14px] border border-slate-200 bg-white p-7 shadow-sm"
               >
                 <Stars />
                 <p className="mt-5 text-sm leading-relaxed text-slate-700">{r.quote}</p>
@@ -108,7 +108,7 @@ export function ReviewTrustFaqSection() {
           </div>
         </div>
       </section>
-      <section className="border-y border-slate-100 bg-slate-50 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">
@@ -120,9 +120,10 @@ export function ReviewTrustFaqSection() {
               신뢰할 수 있는 개발 파트너 FutureVisor이 귀사와 함께 동행합니다.
             </p>
           </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
+          <div className="mt-14 overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
+            <div className="grid gap-px md:grid-cols-3">
             {trustCards.map((c) => (
-              <div key={c.title} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div key={c.title} className="bg-white p-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
@@ -137,10 +138,11 @@ export function ReviewTrustFaqSection() {
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{c.body}</p>
               </div>
             ))}
+            </div>
           </div>
         </div>
       </section>
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-gradient-to-b from-blue-50/60 via-white to-white py-24 md:py-32">
         <div className="mx-auto max-w-[900px] px-6">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">자주 묻는 질문</h2>
@@ -154,7 +156,7 @@ export function ReviewTrustFaqSection() {
                   key={q}
                   type="button"
                   onClick={() => setOpenFaq(open ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-6 py-5 text-left transition hover:bg-slate-100"
+                  className="flex w-full items-center justify-between gap-4 rounded-[14px] border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition hover:bg-slate-50/80"
                 >
                   <span className="font-medium text-slate-900">{q}</span>
                   <span
