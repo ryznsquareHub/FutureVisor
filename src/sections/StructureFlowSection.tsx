@@ -1,22 +1,22 @@
 const pillars = [
   {
     title: 'Zapier 기능',
-    icon: '/assets/zapier기능.png',
+    icon: '/assets/노코드자동화의.png',
     items: ['Trigger / Action', '앱 간 자동화', '외부 API 연결'],
   },
   {
     title: 'Make 기능',
-    icon: '/assets/make기능.png',
+    icon: '/assets/기업수준자동화.png',
     items: ['분기/조건/반복', '복잡 로직 처리', '워크플로우 시각화'],
   },
   {
     title: 'Airtable 기능',
-    icon: '/assets/Airtable기능.png',
+    icon: '/assets/엑셀카톡구글시트.png',
     items: ['DB 역할', '테이블 관리', '폼 입력'],
   },
   {
     title: 'ERP/CRM 기능',
-    icon: '/assets/erpcrm기능.png',
+    icon: '/assets/erpcrm이.png',
     items: ['매출/주문/재고/정산', '권한/승인 기반 변경', '커스텀 로직 반영'],
   },
 ]
@@ -27,18 +27,22 @@ const flowCards = [
   {
     title: '완전 커스텀 구조',
     body: '회사 내부 프로세스에 따라 완전히 커스텀하여 ERP/CRM 수준의 업무 로직을 기업 고유 방식으로 구현합니다.',
+    icon: '/assets/업무로직100.png',
   },
   {
     title: '자동화 + 반자동화',
     body: '반복 업무는 완전 자동화하고, 사람의 승인이 필요한 부분은 반자동화로 안전하게 처리합니다.',
+    icon: '/assets/국내실무환경.png',
   },
   {
     title: '모듈형 확장 구조',
     body: '확장·변경에 강한 모듈형 구조로 설계하여 필요에 따라 기능을 유연하게 추가할 수 있습니다.',
+    icon: '/assets/5주단위모듈형.png',
   },
   {
     title: '점진적 사이클 개발',
     body: '핵심 프로세스부터 시작하여 5주 단위로 검증하며 단계적으로 범위를 넓혀갑니다.',
+    icon: '/assets/5주단위모듈형.png',
   },
 ]
 
@@ -147,15 +151,16 @@ export function StructureFlowSection() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {flowCards.map((c) => (
               <div key={c.title} className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.75}
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"
-                    />
-                  </svg>
+                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl">
+                  <img
+                    src={c.icon}
+                    alt=""
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover object-center"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="mt-5 text-xl font-semibold text-slate-900">{c.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">{c.body}</p>
