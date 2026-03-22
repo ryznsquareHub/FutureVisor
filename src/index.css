@@ -18,3 +18,28 @@ body {
   color: var(--color-slate-ink);
   background: #fff;
 }
+
+@keyframes review-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.review-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: review-marquee 75s linear infinite;
+}
+
+.review-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-marquee-track {
+    animation: none;
+  }
+}

@@ -1,18 +1,22 @@
 const pillars = [
   {
     title: 'Zapier 기능',
+    icon: '/assets/zapier기능.png',
     items: ['Trigger / Action', '앱 간 자동화', '외부 API 연결'],
   },
   {
     title: 'Make 기능',
+    icon: '/assets/make기능.png',
     items: ['분기/조건/반복', '복잡 로직 처리', '워크플로우 시각화'],
   },
   {
     title: 'Airtable 기능',
+    icon: '/assets/Airtable기능.png',
     items: ['DB 역할', '테이블 관리', '폼 입력'],
   },
   {
     title: 'ERP/CRM 기능',
+    icon: '/assets/erpcrm기능.png',
     items: ['매출/주문/재고/정산', '권한/승인 기반 변경', '커스텀 로직 반영'],
   },
 ]
@@ -61,8 +65,16 @@ export function StructureFlowSection() {
                 {i < 3 && (
                   <div className="absolute -right-3 top-1/2 hidden h-0.5 w-6 -translate-y-1/2 bg-slate-300 lg:block" />
                 )}
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-brand-600 shadow-sm">
-                  <span className="text-lg font-bold">{i + 1}</span>
+                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl">
+                  <img
+                    src={p.icon}
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="h-full w-full object-cover object-top"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-slate-900">{p.title}</h3>
                 <ul className="mt-4 space-y-2 text-sm text-slate-600">

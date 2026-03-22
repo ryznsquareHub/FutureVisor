@@ -98,25 +98,47 @@ export function SolutionSection() {
             </h2>
             <p className="mt-6 text-slate-600">비교를 통해 확인하는 FutureVisor의 차별점</p>
           </div>
-          <div className="mt-12 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="mt-12 overflow-x-auto rounded-[14px] border border-slate-200 bg-white shadow-sm">
             <table className="w-full min-w-[720px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-50">
-                  <th className="px-4 py-5 font-semibold text-slate-700 md:px-6">항목</th>
-                  <th className="px-4 py-5 font-semibold text-slate-700 md:px-6">Zapier</th>
-                  <th className="px-4 py-5 font-semibold text-slate-700 md:px-6">Make</th>
-                  <th className="px-4 py-5 font-semibold text-brand-700 md:px-6">FutureVisor</th>
+                <tr className="border-b border-slate-200">
+                  <th className="rounded-tl-[14px] bg-[#f8fafc] px-4 py-5 text-[15px] font-semibold text-slate-900 md:px-6">
+                    항목
+                  </th>
+                  <th className="bg-[#f8fafc] px-4 py-5 text-[15px] font-semibold text-[#314158] md:px-6">
+                    Zapier
+                  </th>
+                  <th className="bg-[#f8fafc] px-4 py-5 text-[15px] font-semibold text-[#314158] md:px-6">
+                    Make
+                  </th>
+                  <th className="rounded-tr-[14px] bg-gradient-to-b from-[#0040ff] via-[#0035dd] to-[#0028bb] px-4 py-5 text-[15px] font-bold text-white md:px-6">
+                    FutureVisor
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {tableRows.map((row) => (
-                  <tr key={row.label} className="border-b border-slate-100 last:border-0">
-                    <td className="px-4 py-5 font-medium text-slate-800 md:px-6">{row.label}</td>
-                    <td className="px-4 py-5 text-slate-600 md:px-6">{row.zapier}</td>
-                    <td className="px-4 py-5 text-slate-600 md:px-6">{row.make}</td>
-                    <td className="bg-brand-500/5 px-4 py-5 font-medium text-slate-800 md:px-6">{row.fv}</td>
-                  </tr>
-                ))}
+                {tableRows.map((row, i) => {
+                  const leftZebra = i % 2 === 1
+                  const fvTint = i % 2 === 0 ? 'bg-[#f7fbff]' : 'bg-[#eff6ff]'
+                  const leftBg = leftZebra ? 'bg-[rgba(248,250,252,0.5)]' : 'bg-white'
+                  const isLast = i === tableRows.length - 1
+                  return (
+                    <tr key={row.label} className="border-b border-slate-100 last:border-0">
+                      <td
+                        className={`px-4 py-5 text-[15px] font-semibold text-slate-900 md:px-6 ${leftBg} ${isLast ? 'rounded-bl-[14px]' : ''}`}
+                      >
+                        {row.label}
+                      </td>
+                      <td className={`px-4 py-5 text-[15px] text-slate-600 md:px-6 ${leftBg}`}>{row.zapier}</td>
+                      <td className={`px-4 py-5 text-[15px] text-slate-600 md:px-6 ${leftBg}`}>{row.make}</td>
+                      <td
+                        className={`px-4 py-5 text-[15px] font-medium text-[#0028bb] md:px-6 ${fvTint} ${isLast ? 'rounded-br-[14px]' : ''}`}
+                      >
+                        {row.fv}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -12,22 +14,63 @@ function ArrowIcon({ className }: { className?: string }) {
   )
 }
 
+/** Figma Hero 로테이션 카피 (밑줄 첫 줄만 교체, 한 줄) */
+const ROTATING_HEADLINES = [
+  '반복 업무를 자동화하고',
+  '업무 효율을 200% 높이고',
+  'ERP보다 유연하게',
+  '5주 만에 구축하고',
+] as const
+
+const ROTATE_MS = 4500
+
 export function Hero() {
+  const [active, setActive] = useState(0)
+  const [motionOk, setMotionOk] = useState(true)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const apply = () => setMotionOk(!mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  useEffect(() => {
+    if (!motionOk) return
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % ROTATING_HEADLINES.length)
+    }, ROTATE_MS)
+    return () => window.clearInterval(id)
+  }, [motionOk])
+
   return (
     <section className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 py-24 md:py-36">
       <div className="mx-auto flex max-w-[1008px] flex-col items-center gap-9 px-6 text-center">
         <div className="rounded-full border border-white/20 bg-white/10 px-6 py-2.5 text-xs font-semibold text-white md:text-sm">
           기업 맞춤형 자동화 플랫폼
         </div>
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold leading-[1.15] tracking-tight text-white md:text-6xl lg:text-[84px] lg:leading-[1.1] lg:tracking-[-0.02em]">
-            <span className="underline decoration-white/40 decoration-2 underline-offset-8">
-              노코드의 한계를 넘어
-            </span>
-            <br />
-            성장에 집중하세요
-          </h1>
-        </div>
+        <h1 className="flex flex-col items-center gap-0 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-[84px] lg:tracking-[-0.02em]">
+          <span
+            className="relative flex min-h-[1.1em] w-full justify-center leading-[1.1]"
+            aria-live={motionOk ? 'polite' : 'off'}
+          >
+            {ROTATING_HEADLINES.map((line, i) => (
+              <span
+                key={line}
+                className={`absolute inset-x-0 top-0 flex justify-center transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+                  i === active ? 'opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+                aria-hidden={i !== active}
+              >
+                <span className="inline-block max-w-[100vw] whitespace-nowrap underline decoration-white/40 decoration-2 underline-offset-8">
+                  {line}
+                </span>
+              </span>
+            ))}
+          </span>
+          <span className="block leading-[1.1]">성장에 집중하세요</span>
+        </h1>
         <p className="max-w-xl text-lg leading-8 text-white/90 md:text-xl md:leading-9">
           ERP보다 유연하고, SaaS보다 정확하게.
           <br />
