@@ -50,26 +50,26 @@ export function Hero() {
         <div className="rounded-full border border-white/20 bg-white/10 px-6 py-2.5 text-xs font-semibold text-white md:text-sm">
           기업 맞춤형 자동화 플랫폼
         </div>
-        <h1 className="flex flex-col items-center gap-0 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-[84px] lg:tracking-[-0.02em]">
+        <h1 className="flex flex-col items-center gap-0 overflow-visible text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-6xl lg:text-[84px] lg:tracking-[-0.02em]">
           <span
-            className="relative flex min-h-[1.1em] w-full justify-center leading-[1.1]"
+            className="relative min-h-[1.15em] w-full min-w-0 px-1 leading-[1.15]"
             aria-live={motionOk ? 'polite' : 'off'}
           >
             {ROTATING_HEADLINES.map((line, i) => (
               <span
                 key={line}
-                className={`absolute inset-x-0 top-0 flex justify-center transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+                className={`absolute inset-x-0 top-0 flex justify-center overflow-visible transition-opacity duration-700 ease-out motion-reduce:transition-none ${
                   i === active ? 'opacity-100' : 'pointer-events-none opacity-0'
                 }`}
                 aria-hidden={i !== active}
               >
-                <span className="inline-block max-w-[100vw] whitespace-nowrap underline decoration-white/40 decoration-2 underline-offset-8">
+                <span className="inline-block whitespace-nowrap text-center text-[2rem] underline decoration-white/40 decoration-2 underline-offset-8 sm:text-[2.5rem] md:text-[4rem] lg:text-[96px] lg:underline-offset-[0.2em]">
                   {line}
                 </span>
               </span>
             ))}
           </span>
-          <span className="block leading-[1.1]">성장에 집중하세요</span>
+          <span className="mt-1 block leading-[1.1] sm:mt-0">성장에 집중하세요</span>
         </h1>
         <p className="max-w-xl text-lg leading-8 text-white/90 md:text-xl md:leading-9">
           ERP보다 유연하고, SaaS보다 정확하게.

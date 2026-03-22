@@ -1,44 +1,74 @@
 import { useState, type ReactNode } from 'react'
 
-const reviews = [
+const reviews: { quote: ReactNode; name: string; role: string; avatar: string }[] = [
   {
-    quote:
-      '주문부터 정산, 송장 발송까지 모든 프로세스가 자동화되면서 실무자의 업무 부담이 70% 이상 줄었습니다.',
+    quote: (
+      <>
+        주문부터 정산, 송장 발송까지 모든 프로세스가 자동화되면서
+        <br />
+        실무자의 업무 부담이 70% 이상 줄었습니다.
+      </>
+    ),
     name: '김준호',
     role: 'ESP 마케팅 대표',
     avatar: '/assets/image(김준호).png',
   },
   {
-    quote:
-      'ERP 도입을 고민하다가 FutureVisor를 선택한 것이 최고의 결정이었습니다. 우리 업무에 딱 맞는 시스템이 완성됐습니다.',
+    quote: (
+      <>
+        ERP 도입을 고민하다가 FutureVisor를 선택한 것이 최고의 결정이었습니다.
+        <br />
+        우리 업무에 딱 맞는 시스템이 완성됐습니다.
+      </>
+    ),
     name: '이수진',
     role: '헬스케어솔루션 운영이사',
     avatar: '/assets/image(이수진).png',
   },
   {
-    quote:
-      'Zapier로는 구현 불가능했던 복잡한 재고 관리와 정산 로직이 완벽하게 구현되었습니다.',
+    quote: (
+      <>
+        Zapier로는 구현 불가능했던 복잡한 재고 관리와 정산 로직이
+        <br />
+        완벽하게 구현되었습니다.
+      </>
+    ),
     name: '박민수',
     role: '유통기업 IT본부장',
     avatar: '/assets/image(박민수).png',
   },
   {
-    quote:
-      '생산 현장의 실시간 데이터를 통합하여 의사결정 속도가 3배 빨라졌습니다. 경영진이 현장 상황을 즉시 파악합니다.',
+    quote: (
+      <>
+        생산 현장의 실시간 데이터를 통합하여 의사결정 속도가 3배 빨라졌습니다.
+        <br />
+        경영진이 현장 상황을 즉시 파악합니다.
+      </>
+    ),
     name: '최은영',
     role: '제조기업 혁신실장',
     avatar: '/assets/image(최은영).png',
   },
   {
-    quote:
-      '개발자 없이도 비즈니스 로직을 빠르게 수정할 수 있어서 시장 변화에 민첩하게 대응하고 있습니다.',
+    quote: (
+      <>
+        개발자 없이도 비즈니스 로직을 빠르게 수정할 수 있어서
+        <br />
+        시장 변화에 민첩하게 대응하고 있습니다.
+      </>
+    ),
     name: '정태훈',
     role: '물류 스타트업 CTO',
     avatar: '/assets/image(정태훈).png',
   },
   {
-    quote:
-      '고객 문의부터 배송, CS까지 모든 것이 연결되어 업무 효율이 비약적으로 향상되었습니다.',
+    quote: (
+      <>
+        고객 문의부터 배송, CS까지 모든 것이 연결되어
+        <br />
+        업무 효율이 비약적으로 향상되었습니다.
+      </>
+    ),
     name: '강혜진',
     role: '커머스 기업 COO',
     avatar: '/assets/image(강혜진).png',
@@ -75,10 +105,14 @@ const faqs: FaqItem[] = [
       <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
         <p>FutureVisor는 단순 자동화 툴이나 외주 개발이 아니라,</p>
         <p className="font-bold text-slate-900">
-          기업의 핵심 업무 흐름을 분석하고, 5주 단위로 단계적으로 자동화·시스템화하는 기업 맞춤형 자동화·운영 시스템 구축 서비스입니다.
+          기업의 핵심 업무 흐름을 분석하고,
+          <br />
+          5주 단위로 단계적으로 자동화·시스템화하는 기업 맞춤형 자동화·운영 시스템 구축 서비스입니다.
         </p>
         <p>
-          ERP, CRM, 재고·정산·보고 등 회사 운영에 직접 영향을 주는 업무를 기업 프로세스에 맞게 설계·개발합니다.
+          ERP, CRM, 재고·정산·보고 등 회사 운영에 직접 영향을 주는 업무를
+          <br className="md:hidden" />
+          기업 프로세스에 맞게 설계·개발합니다.
         </p>
       </div>
     ),
@@ -149,6 +183,7 @@ const faqs: FaqItem[] = [
         </p>
         <p>
           프로젝트는 <span className="font-bold text-slate-900">1사이클 기준 1,000만원부터</span> 시작되며,
+          <br className="md:hidden" />
           이는 품질, 운영 안정성, 지속 가능한 유지보수를 위한 최소 기준입니다.
         </p>
       </div>
@@ -161,8 +196,9 @@ const faqs: FaqItem[] = [
         <p>네.</p>
         <p>
           FutureVisor에서는 <span className="font-bold text-slate-900">자동화 가능성 체크</span>와
-          <span className="font-bold text-slate-900"> 유료 업무 진단(컨설팅)</span>을 통해 귀사에 적합한
-          자동화 범위와 방향을 먼저 제안드립니다.
+          <span className="font-bold text-slate-900"> 유료 업무 진단(컨설팅)</span>을 통해
+          <br className="md:hidden" />
+          귀사에 적합한 자동화 범위와 방향을 먼저 제안드립니다.
         </p>
       </div>
     ),

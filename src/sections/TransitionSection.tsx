@@ -8,7 +8,7 @@ export function TransitionSection() {
     >
       <div className="mx-auto max-w-[896px] px-6 text-center">
         <h2 className="text-3xl font-bold leading-tight text-white md:text-5xl md:leading-tight">
-          반복 업무 때문에 시간에 쫓겨
+          반복 업무 때문에 시간에 쫓겨,
           <br />
           중요한 일을 못하고 있지는 않나요?
         </h2>

@@ -103,7 +103,7 @@ export function ProcessPortfolioSection() {
         <div className="mx-auto grid max-w-[1288px] gap-14 px-6 lg:grid-cols-2 lg:px-8">
           <div>
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
-              FutureVisor는
+              FutureVisor,
               <br />
               이렇게 구축합니다
             </h2>

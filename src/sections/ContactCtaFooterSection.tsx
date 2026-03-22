@@ -32,9 +32,7 @@ export function ContactCtaFooterSection() {
                 className="mb-4 block h-9 w-auto md:mb-5 md:h-10"
                 decoding="async"
               />
-              전문 개발팀에
-              <br />
-              의뢰하세요
+              전문 개발팀에 의뢰하세요
             </h2>
             <div className="mt-12 space-y-6">
               {services.map((s) => (
@@ -63,9 +61,9 @@ export function ContactCtaFooterSection() {
             </div>
           <div className="border-t border-slate-200 bg-white p-8 md:border-t-0 md:border-l md:p-12">
             <h3 className="text-2xl font-semibold text-slate-900 md:text-3xl">
-              어떤 업무를 자동화하고
+              어떤 업무를
               <br />
-              <span className="text-brand-600">싶으신가요?</span>
+              <span className="text-brand-600">자동화하고 싶으신가요?</span>
             </h3>
             <form
               className="mt-10 space-y-6"

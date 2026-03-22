@@ -5,9 +5,9 @@ const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string
     key: 'scattered-tools',
     title: (
       <>
-        엑셀·카톡·구글시트에
+        엑셀·카톡·구글시트에 흩어진
         <br />
-        흩어진 업무
+        업무
       </>
     ),
     body: '반복 입력과 중복 기록으로 시간이 새어 나가고, 인수인계와 관리가 점점 어려워집니다.',
@@ -17,9 +17,9 @@ const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string
     key: 'erp-mismatch',
     title: (
       <>
-        ERP/CRM이
+        우리 업무와 맞지 않는
         <br />
-        우리 업무와 맞지 않음
+        ERP/CRM
       </>
     ),
     body: '시스템을 도입했지만 40~60%는 여전히 수기로 처리하며 실무자의 부담이 남아 있습니다.',
@@ -29,12 +29,12 @@ const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string
     key: 'nocode-limits',
     title: (
       <>
-        노코드 자동화의
+        노코드 자동화만으로는
         <br />
-        구조적 한계
+        닿기 어려운 한계
       </>
     ),
-    body: '승인·분기·재고·정산 같은 복잡한 로직은 Zapier/Make만으로는 구현이 어렵습니다.',
+    body: '승인·분기·재고·정산 같은 복잡한 로직은 노코드 툴만으로는 구현이 어렵습니다.',
     iconSrc: '/assets/노코드자동화의.png',
   },
 ]

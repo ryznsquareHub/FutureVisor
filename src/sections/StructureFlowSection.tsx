@@ -1,3 +1,5 @@
+import { Fragment } from 'react'
+
 const pillars = [
   {
     title: 'Zapier 기능',
@@ -63,11 +65,46 @@ export function StructureFlowSection() {
               여러 도구의 장점을 하나로 통합한 All-in-One 자동화 시스템
             </p>
           </div>
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-16 flex flex-col lg:hidden">
+            {pillars.map((p, i) => (
+              <Fragment key={p.title}>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+                  <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl">
+                    <img
+                      src={p.icon}
+                      alt=""
+                      width={56}
+                      height={56}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold text-slate-900">{p.title}</h3>
+                  <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                    {p.items.map((it) => (
+                      <li key={it} className="flex items-center gap-2">
+                        <span className="text-brand-500">✓</span>
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {i < pillars.length - 1 && (
+                  <div className="flex justify-center py-4" aria-hidden>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-lg font-light text-slate-400">
+                      +
+                    </span>
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+          <div className="mt-16 hidden gap-6 lg:grid lg:grid-cols-4">
             {pillars.map((p, i) => (
               <div key={p.title} className="relative rounded-2xl border border-slate-200 bg-slate-50 p-8">
                 {i < 3 && (
-                  <div className="absolute -right-3 top-1/2 hidden h-0.5 w-6 -translate-y-1/2 bg-slate-300 lg:block" />
+                  <div className="absolute -right-3 top-1/2 h-0.5 w-6 -translate-y-1/2 bg-slate-300" />
                 )}
                 <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl">
                   <img
@@ -132,16 +169,27 @@ export function StructureFlowSection() {
               <span className="text-brand-600">기업 고유 프로세스를 완벽하게</span>
             </h2>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-slate-600">
-              우선순위가 높은 핵심 프로세스부터 맞춤형으로 개발하여, 5주 사이클 단위로 기능을 점진적으로
-              확장합니다.
+              우선순위가 높은 핵심 프로세스부터 맞춤형으로 개발하여,
+              <br />
+              5주 사이클 단위로 기능을 점진적으로 확장합니다.
             </p>
           </div>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2 text-sm font-medium text-slate-700 md:gap-3">
+          <div className="mt-10 mx-auto grid max-w-sm grid-cols-2 gap-2 md:hidden">
+            {flowSteps.map((s) => (
+              <span
+                key={s}
+                className="rounded-full bg-white px-4 py-2 text-center text-sm font-medium text-slate-700 shadow-sm ring-1 ring-slate-200"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+          <div className="mt-10 hidden flex-wrap items-center justify-center gap-2 text-sm font-medium text-slate-700 md:flex md:gap-3">
             {flowSteps.map((s, idx) => (
               <span key={s} className="flex items-center gap-2">
                 <span className="rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-slate-200">{s}</span>
                 {idx < flowSteps.length - 1 && (
-                  <span className="hidden text-slate-400 sm:inline" aria-hidden>
+                  <span className="text-slate-400" aria-hidden>
                     →
                   </span>
                 )}

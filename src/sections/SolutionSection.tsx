@@ -74,7 +74,7 @@ export function SolutionSection() {
         </div>
         <div className="mx-auto mt-16 max-w-[1288px] px-6 lg:px-8">
           <div className="overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
-            <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-px md:grid-cols-2 lg:grid-cols-4">
               {features.map((f) => (
                 <div key={f.title} className="bg-white p-7">
                   <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/60">
@@ -109,7 +109,36 @@ export function SolutionSection() {
             </h2>
             <p className="mt-6 text-slate-600">비교를 통해 확인하는 FutureVisor의 차별점</p>
           </div>
-          <div className="mt-12 overflow-x-auto rounded-[14px] border border-slate-200 bg-white shadow-sm">
+          <div className="mt-12 space-y-4 md:hidden">
+            {tableRows.map((row, i) => {
+              const fvTint = i % 2 === 0 ? 'bg-[#f7fbff]' : 'bg-[#eff6ff]'
+              return (
+                <div
+                  key={row.label}
+                  className="overflow-hidden rounded-[14px] border border-slate-200 bg-white shadow-sm"
+                >
+                  <div className="border-b border-slate-200 bg-[#f8fafc] px-4 py-4 text-center text-[15px] font-semibold text-slate-900">
+                    {row.label}
+                  </div>
+                  <div className="divide-y divide-slate-100">
+                    <div className="bg-white px-4 py-4">
+                      <p className="text-xs font-semibold text-slate-500">Zapier</p>
+                      <p className="mt-1 text-[15px] leading-snug text-slate-600">{row.zapier}</p>
+                    </div>
+                    <div className="bg-white px-4 py-4">
+                      <p className="text-xs font-semibold text-slate-500">Make</p>
+                      <p className="mt-1 text-[15px] leading-snug text-slate-600">{row.make}</p>
+                    </div>
+                    <div className={`px-4 py-4 ${fvTint}`}>
+                      <p className="text-xs font-bold text-[#0028bb]">FutureVisor ✨</p>
+                      <p className="mt-1 text-[15px] font-medium leading-snug text-[#0028bb]">{row.fv}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div className="mt-12 hidden overflow-x-auto rounded-[14px] border border-slate-200 bg-white shadow-sm md:block">
             <table className="w-full min-w-[720px] border-collapse text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200">
@@ -123,7 +152,7 @@ export function SolutionSection() {
                     Make
                   </th>
                   <th className="rounded-tr-[14px] bg-gradient-to-b from-[#0040ff] via-[#0035dd] to-[#0028bb] px-4 py-5 text-[15px] font-bold text-white md:px-6">
-                    FutureVisor
+                    FutureVisor ✨
                   </th>
                 </tr>
               </thead>
