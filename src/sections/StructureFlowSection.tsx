@@ -23,6 +23,8 @@ const pillars = [
   },
 ]
 
+const PILLAR_PLUS_ICON = '/assets/plusicon.png'
+
 const flowSteps = ['업무 진단', '기능 정의', '시스템 설계', '개발', 'QA', '자동화 반영']
 
 const flowCards = [
@@ -153,41 +155,60 @@ export function StructureFlowSection() {
                 </div>
                 {i < pillars.length - 1 && (
                   <div className="flex justify-center py-4" aria-hidden>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-lg font-light text-slate-400">
-                      +
-                    </span>
+                    <img
+                      src={PILLAR_PLUS_ICON}
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="h-9 w-9 object-contain"
+                      decoding="async"
+                    />
                   </div>
                 )}
               </Fragment>
             ))}
           </div>
-          <div className="mt-16 hidden gap-6 lg:grid lg:grid-cols-4">
+          <div className="mt-16 hidden lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-stretch lg:gap-y-6">
             {pillars.map((p, i) => (
-              <div key={p.title} className="relative rounded-2xl border border-slate-200 bg-slate-50 p-8">
-                {i < 3 && (
-                  <div className="absolute -right-3 top-1/2 h-0.5 w-6 -translate-y-1/2 bg-slate-300" />
-                )}
-                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl">
-                  <img
-                    src={p.icon}
-                    alt=""
-                    width={56}
-                    height={56}
-                    className="h-full w-full object-cover object-top"
-                    loading="lazy"
-                    decoding="async"
-                  />
+              <Fragment key={p.title}>
+                <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-8">
+                  <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl">
+                    <img
+                      src={p.icon}
+                      alt=""
+                      width={56}
+                      height={56}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold text-slate-900">{p.title}</h3>
+                  <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                    {p.items.map((it) => (
+                      <li key={it} className="flex items-center gap-2">
+                        <span className="text-brand-500">✓</span>
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <h3 className="mt-5 text-lg font-semibold text-slate-900">{p.title}</h3>
-                <ul className="mt-4 space-y-2 text-sm text-slate-600">
-                  {p.items.map((it) => (
-                    <li key={it} className="flex items-center gap-2">
-                      <span className="text-brand-500">✓</span>
-                      {it}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                {i < 3 && (
+                  <div
+                    className="flex items-center justify-center px-8 md:px-10"
+                    aria-hidden
+                  >
+                    <img
+                      src={PILLAR_PLUS_ICON}
+                      alt=""
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 shrink-0 object-contain"
+                      decoding="async"
+                    />
+                  </div>
+                )}
+              </Fragment>
             ))}
           </div>
           <div className="relative mt-14 overflow-visible rounded-t-[28px] border-x border-t border-[#f1f5f9] bg-white md:mt-16 md:rounded-t-[56px]">

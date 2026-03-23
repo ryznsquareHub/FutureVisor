@@ -218,14 +218,14 @@ function Stars() {
 }
 
 const REVIEW_CARD_CLASS =
-  'w-[min(100vw-3rem,400px)] shrink-0 rounded-[14px] border border-slate-200 bg-white p-7 shadow-sm'
+  'flex w-[min(100vw-3rem,400px)] shrink-0 flex-col rounded-[14px] border border-slate-200 bg-white p-7 shadow-sm'
 
 function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
   return (
     <article className={REVIEW_CARD_CLASS}>
       <Stars />
       <p className="mt-5 text-sm leading-relaxed text-slate-700">{r.quote}</p>
-      <div className="mt-6 flex items-center gap-3">
+      <div className="mt-auto flex items-center gap-3 pt-6">
         <img
           src={r.avatar}
           alt=""
