@@ -52,10 +52,51 @@ const flowCards = [
  * Figma: 기능 구조 하단 FutureVisor 카드 (node 1211-4218)
  * https://www.figma.com/design/hf1fGyJXjIGg6IdWwFvaRt/Untitled?node-id=1211-4218
  *
- * 로켓: 그라디언트 스쿼클 + 흰 stroke SVG(Figma와 동일 분리). 워드마크: logobig.png.
+ * 로켓: 그라디언트 스쿼클 + 인라인 SVG(54 viewBox). 워드마크: logobig.png.
  */
-const FV_SUMMARY_ROCKET_SVG = '/assets/fv-summary-rocket.svg'
-const FV_SUMMARY_ROCKET_PNG = '/assets/rocket.png'
+function FvSummaryRocketIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 54 54"
+      width={72}
+      height={72}
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <path
+        d="M9.97372 36.5701C6.64919 39.3627 5.54102 47.6519 5.54102 47.6519C5.54102 47.6519 13.8302 46.5437 16.6228 43.2192C18.1964 41.3574 18.1742 38.4984 16.4233 36.7696C15.5618 35.9474 14.427 35.4722 13.2367 35.4354C12.0464 35.3986 10.8844 35.8027 9.97372 36.5701Z"
+        stroke="white"
+        strokeWidth="4.4327"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M26.5963 33.2452L19.9473 26.5962C21.1267 23.5364 22.6118 20.6033 24.38 17.8416C26.9624 13.7125 30.5583 10.3128 34.8256 7.96574C39.0929 5.61872 43.8898 4.40247 48.7598 4.43268C48.7598 10.4612 47.0311 21.0553 35.4617 28.8125C32.6622 30.5828 29.6922 32.0678 26.5963 33.2452Z"
+        stroke="white"
+        strokeWidth="4.4327"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19.947 26.5962H8.86523C8.86523 26.5962 10.0842 19.8807 13.2979 17.7308C16.8884 15.3372 24.3797 17.7308 24.3797 17.7308"
+        stroke="white"
+        strokeWidth="4.4327"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M26.5962 33.2452V44.327C26.5962 44.327 33.3117 43.108 35.4616 39.8943C37.8553 36.3038 35.4616 28.8125 35.4616 28.8125"
+        stroke="white"
+        strokeWidth="4.4327"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 const FV_SUMMARY_WORDMARK_PNG = '/assets/logobig.png'
 const FV_SUMMARY_WORDMARK_FALLBACK = '/assets/logo.png'
 
@@ -153,15 +194,7 @@ export function StructureFlowSection() {
             <div className="mx-auto max-w-[475px] px-6 pb-12 pt-14 text-center md:px-8 md:pb-16 md:pt-16">
               <div className="mx-auto flex justify-center">
                 <div className="-mt-10 flex h-[88px] w-[88px] shrink-0 items-center justify-center rounded-[21px] bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 shadow-[0px_25px_50px_0px_rgba(0,0,0,0.25)] sm:h-[100px] sm:w-[100px] md:-mt-12 md:h-[106px] md:w-[106px]">
-                  <img
-                    src={FV_SUMMARY_ROCKET_SVG}
-                    alt=""
-                    width={53}
-                    height={53}
-                    className="h-9 w-9 sm:h-11 sm:w-11 md:h-[53px] md:w-[53px]"
-                    decoding="async"
-                    onError={(e) => imgFallbackOnce(e, FV_SUMMARY_ROCKET_PNG)}
-                  />
+                  <FvSummaryRocketIcon className="h-16 w-16 shrink-0 object-contain sm:h-[72px] sm:w-[72px] md:h-20 md:w-20" />
                 </div>
               </div>
               <div className="mx-auto mt-6 inline-block max-w-full md:mt-7">
