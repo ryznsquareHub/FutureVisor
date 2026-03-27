@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import EndToEndProcessFlow from '../components/EndToEndProcessFlow'
+
 const steps = [
   {
     n: '01',
@@ -124,12 +126,9 @@ export function ProcessPortfolioSection() {
           </div>
           <div className="flex items-center justify-center">
             <div className="aspect-square w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm">
-              <img
-                src="/assets/process-flow.png"
-                alt="FutureVisor End-to-End 프로세스 플로우 다이어그램"
-                className="h-full w-full object-contain object-center p-2"
-                loading="lazy"
-              />
+              <div className="h-full w-full">
+                <EndToEndProcessFlow />
+              </div>
             </div>
           </div>
         </div>
