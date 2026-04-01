@@ -102,8 +102,8 @@ export function ProcessPortfolioSection() {
   return (
     <>
       <section id="process" className="bg-white py-24 md:py-36">
-        <div className="mx-auto grid max-w-[1288px] gap-14 px-6 lg:grid-cols-2 lg:px-8">
-          <div>
+        <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-14 px-8 lg:flex-row lg:items-stretch lg:gap-20 lg:px-16">
+          <div className="flex flex-1 flex-col">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
               FutureVisor,
               <br />
@@ -124,17 +124,15 @@ export function ProcessPortfolioSection() {
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="aspect-square w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm">
-              <div className="h-full w-full">
-                <EndToEndProcessFlow />
-              </div>
+          <div className="flex min-h-[min(92vw,420px)] flex-1 flex-col lg:min-h-0">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-6 lg:p-8">
+              <EndToEndProcessFlow />
             </div>
           </div>
         </div>
       </section>
       <section id="portfolio" className="bg-[#0f172b] pb-20 pt-24 md:pb-28 md:pt-28">
-        <div className="mx-auto max-w-[1288px] px-6 text-center lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 text-center lg:px-16">
           <h2 className="text-3xl font-bold text-white md:text-5xl">
             실제 기업들은
             <br />

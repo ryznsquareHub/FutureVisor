@@ -58,21 +58,23 @@ export function SolutionSection() {
   return (
     <>
       <section id="solution" className="bg-white py-24 md:py-36">
-        <div className="mx-auto max-w-[896px] px-6 text-center">
-          <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
-            <span className="block">우리 회사 방식은 그대로</span>
-            <span className="mt-1 block md:mt-0">
-              작동하는{' '}
-              <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
-                맞춤형 자동화
+        <div className="mx-auto max-w-[1400px] px-8 text-center lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
+              <span className="block">우리 회사 방식은 그대로</span>
+              <span className="mt-1 block md:mt-0">
+                작동하는{' '}
+                <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
+                  맞춤형 자동화
+                </span>
               </span>
-            </span>
-          </h2>
-          <p className="mx-auto mt-8 max-w-3xl text-lg text-slate-600 md:text-xl">
-            FutureVisor는 기업 고유 프로세스를 분석·설계·개발·자동화까지 End-to-End로 함께합니다.
-          </p>
+            </h2>
+            <p className="mx-auto mt-8 max-w-3xl text-lg text-slate-600 md:text-xl">
+              FutureVisor는 기업 고유 프로세스를 분석·설계·개발·자동화까지 End-to-End로 함께합니다.
+            </p>
+          </div>
         </div>
-        <div className="mx-auto mt-16 max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto mt-16 max-w-[1400px] px-8 lg:px-16">
           <div className="overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
             <div className="grid grid-cols-1 gap-px md:grid-cols-2 lg:grid-cols-4">
               {features.map((f) => (
@@ -97,7 +99,7 @@ export function SolutionSection() {
         </div>
       </section>
       <section className="bg-gradient-to-b from-[#f8fbff] to-[#f0f5ff] py-24 md:py-32">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
               노코드 자동화와는

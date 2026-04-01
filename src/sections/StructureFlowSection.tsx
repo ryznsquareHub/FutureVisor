@@ -115,7 +115,7 @@ export function StructureFlowSection() {
   return (
     <>
       <section className="bg-white py-24 md:py-36">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
               FutureVisor가 실제로
@@ -273,7 +273,7 @@ export function StructureFlowSection() {
         </div>
       </section>
       <section className="border-t border-slate-100 bg-gradient-to-b from-white to-blue-100 py-24 md:py-36">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
               커스텀 + 반자동화로

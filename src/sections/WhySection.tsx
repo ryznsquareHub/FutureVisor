@@ -43,7 +43,7 @@ export function WhySection() {
   return (
     <>
       <section id="why" className="bg-white pt-24 pb-0 md:pt-36">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-5xl md:leading-tight">
               이런 불편을 겪고 계신가요?

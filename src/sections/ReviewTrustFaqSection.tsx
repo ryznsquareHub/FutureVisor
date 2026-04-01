@@ -250,7 +250,7 @@ export function ReviewTrustFaqSection() {
   return (
     <>
       <section className="bg-gradient-to-b from-white to-blue-100 py-24 md:py-32">
-        <div className="mx-auto max-w-[1288px] px-6 text-center lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 text-center lg:px-16">
           <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">고객사의 성공 이야기</h2>
           <p className="mt-4 text-slate-600">
             FutureVisor와 함께 비즈니스를 혁신한 기업들의 실제 후기
@@ -270,7 +270,7 @@ export function ReviewTrustFaqSection() {
         </div>
       </section>
       <section className="bg-white py-24 md:py-32">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-900 md:text-5xl">
               문서와 프로세스로

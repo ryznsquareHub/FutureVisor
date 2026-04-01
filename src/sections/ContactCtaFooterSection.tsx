@@ -103,7 +103,7 @@ export function ContactCtaFooterSection() {
   return (
     <>
       <section id="contact" className="bg-[#0f172b] py-24 md:py-32">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="overflow-hidden rounded-[21px] bg-white shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] lg:grid lg:grid-cols-[minmax(0,368px)_1fr]">
             <div className="bg-gradient-to-b from-white to-blue-100 p-10 md:p-14">
             <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
@@ -243,7 +243,7 @@ export function ContactCtaFooterSection() {
         </div>
       </section>
       <section className="bg-white py-24 md:py-32">
-        <div className="mx-auto max-w-[1288px] px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-8 lg:px-16">
           <div className="relative overflow-hidden rounded-[14px] bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 px-6 py-16 shadow-[0px_25px_50px_-12px_rgba(0,64,255,0.3)] md:px-12 md:py-20">
         <div className="relative z-10 mx-auto max-w-[900px] text-center text-white">
           <h2 className="text-3xl font-bold leading-tight md:text-5xl md:leading-tight">
@@ -275,7 +275,7 @@ export function ContactCtaFooterSection() {
         </div>
       </section>
       <footer className="border-t border-[#1d293d] bg-[#0f172b] py-12">
-        <div className="mx-auto flex max-w-[1288px] flex-col items-center justify-between gap-6 px-6 md:flex-row lg:px-8">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-6 px-8 md:flex-row lg:px-16">
           <div>
             <img
               src="/assets/logo.png"

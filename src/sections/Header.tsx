@@ -115,7 +115,7 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-[84px] max-w-[1400px] items-center justify-between px-6 lg:px-14">
+        <div className="mx-auto flex h-[84px] max-w-[1400px] items-center justify-between px-8 lg:px-16">
           <Logo />
           <nav className="hidden items-center gap-10 md:flex" aria-label="주요 메뉴">
             {nav.map((item) => (

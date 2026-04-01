@@ -10,13 +10,29 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: var(--font-sans);
   color: var(--color-slate-ink);
   background: #fff;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
 }
 
 @keyframes review-marquee {

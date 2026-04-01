@@ -10,7 +10,7 @@ import { ContactCtaFooterSection } from './sections/ContactCtaFooterSection'
 
 export function FutureVisorLanding() {
   return (
-    <div className="min-h-screen break-keep bg-white text-slate-ink antialiased">
+    <div className="min-h-screen w-full max-w-none break-keep bg-white text-slate-ink antialiased">
       <Header />
       <main>
         <Hero />
