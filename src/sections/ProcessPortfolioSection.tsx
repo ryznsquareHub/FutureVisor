@@ -204,64 +204,80 @@ export function ProcessPortfolioSection() {
                 >
                   {p.description}
                 </p>
-                <div className="mt-8 grid gap-6 md:grid-cols-2">
-                  {[0, 1].map((i) => (
+                <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
+                  {/* 비스듬하게 포개진 이미지 */}
+                  <div className="relative h-[200px] flex-1 sm:h-[240px] md:h-[280px] lg:h-[320px]">
                     <div
-                      key={i}
-                      className={
+                      className={`absolute left-0 top-0 w-[82%] overflow-hidden rounded-[14px] shadow-lg ${
                         isDark
-                          ? 'aspect-video overflow-hidden rounded-[14px] border border-slate-600/50 bg-[#1d293d]/30 shadow-lg'
-                          : 'aspect-video overflow-hidden rounded-[14px] border border-slate-200/80 bg-slate-100/40 shadow-md'
-                      }
+                          ? 'border border-slate-600/50 bg-[#1d293d]/30'
+                          : 'border border-slate-200/80 bg-slate-100/40 shadow-md'
+                      }`}
                     >
                       <img
-                        src={p.images[i]}
-                        alt={p.imageAlts[i]}
-                        className="h-full w-full object-cover object-top"
+                        src={p.images[0]}
+                        alt={p.imageAlts[0]}
+                        className="aspect-video w-full object-cover object-top"
                         loading="lazy"
                       />
                     </div>
-                  ))}
-                </div>
-                <div
-                  className={
-                    isDark
-                      ? 'mt-10 rounded-[14px] border border-slate-600/50 p-10'
-                      : 'mt-10 rounded-[14px] border border-white/50 bg-gradient-to-b from-white to-[#ecf4ff] p-10'
-                  }
-                  style={
-                    isDark
-                      ? {
-                          backgroundImage:
-                            'linear-gradient(171.12deg, rgba(29, 41, 61, 0.8) 0%, rgba(15, 23, 43, 0.8) 100%)',
-                        }
-                      : undefined
-                  }
-                >
-                  <p
-                    className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wide ${isDark ? 'text-white' : 'text-slate-900'}`}
-                  >
-                    <span className="h-7 w-1 rounded-full bg-gradient-to-b from-brand-500 to-[#1787ff]" />
-                    Results
-                  </p>
-                  <div className="mt-6 grid gap-4 md:grid-cols-3">
-                    {p.results.map((r) => (
-                      <div
-                        key={r}
-                        className={`flex items-center gap-3 text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}
-                      >
-                        <span
-                          className={
-                            isDark
-                              ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 to-[#1787ff] text-white shadow-sm'
-                              : 'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 text-white shadow-sm'
+                    <div
+                      className={`absolute bottom-0 right-0 w-[76%] overflow-hidden rounded-[14px] shadow-2xl ${
+                        isDark
+                          ? 'border border-slate-600/50 bg-[#1d293d]/30'
+                          : 'border border-slate-200/80 bg-slate-100/40'
+                      }`}
+                    >
+                      <img
+                        src={p.images[1]}
+                        alt={p.imageAlts[1]}
+                        className="aspect-video w-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Results — 오른쪽 배치 */}
+                  <div
+                    className={`shrink-0 rounded-[14px] border p-8 lg:w-[280px] xl:w-[320px] ${
+                      isDark
+                        ? 'border-slate-600/50'
+                        : 'border-white/50 bg-gradient-to-b from-white to-[#ecf4ff]'
+                    }`}
+                    style={
+                      isDark
+                        ? {
+                            backgroundImage:
+                              'linear-gradient(171.12deg, rgba(29, 41, 61, 0.8) 0%, rgba(15, 23, 43, 0.8) 100%)',
                           }
+                        : undefined
+                    }
+                  >
+                    <p
+                      className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wide ${isDark ? 'text-white' : 'text-slate-900'}`}
+                    >
+                      <span className="h-7 w-1 rounded-full bg-gradient-to-b from-brand-500 to-[#1787ff]" />
+                      Results
+                    </p>
+                    <div className="mt-6 flex flex-col gap-4">
+                      {p.results.map((r) => (
+                        <div
+                          key={r}
+                          className={`flex items-center gap-3 text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}
                         >
-                          ✓
-                        </span>
-                        {r}
-                      </div>
-                    ))}
+                          <span
+                            className={
+                              isDark
+                                ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 to-[#1787ff] text-white shadow-sm'
+                                : 'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 text-white shadow-sm'
+                            }
+                          >
+                            ✓
+                          </span>
+                          {r}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
