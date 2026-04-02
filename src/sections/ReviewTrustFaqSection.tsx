@@ -1,29 +1,18 @@
 import { useState, type ReactNode } from 'react'
 
-const reviews: { quote: ReactNode; name: string; role: string; avatar: string }[] = [
+const reviews: { quote: ReactNode; name: string; title: string; role: string; avatar: string }[] = [
   {
     quote: (
       <>
-        주문부터 정산, 송장 발송까지 모든 프로세스가 자동화되면서
+        초기 상담에서 우리의 요구를 정확히 이해하고, 이에 맞춘 최적의 솔루션을 제시해 주었습니다.
         <br />
-        실무자의 업무 부담이 70% 이상 줄었습니다.
+        결과물에 매우 만족하며, 앞으로도 신뢰할 수 있는 퓨처바이저를 선택할 것입니다.
       </>
     ),
-    name: '김준호',
-    role: 'ESP 마케팅 대표',
-    avatar: '/assets/나인테크.png',
-  },
-  {
-    quote: (
-      <>
-        ERP 도입을 고민하다가 FutureVisor를 선택한 것이 최고의 결정이었습니다.
-        <br />
-        우리 업무에 딱 맞는 시스템이 완성됐습니다.
-      </>
-    ),
-    name: '이수진',
-    role: '헬스케어솔루션 운영이사',
-    avatar: '/assets/에이프릴.png',
+    name: '신○○',
+    title: '과장',
+    role: '엘르',
+    avatar: '/assets/엘르.png',
   },
   {
     quote: (
@@ -33,9 +22,10 @@ const reviews: { quote: ReactNode; name: string; role: string; avatar: string }[
         완벽하게 구현되었습니다.
       </>
     ),
-    name: '박민수',
-    role: '유통기업 IT본부장',
-    avatar: '/assets/sk C&C.png',
+    name: '석○○',
+    title: '연구원',
+    role: '테크다스',
+    avatar: '/assets/테크다스.png',
   },
   {
     quote: (
@@ -45,79 +35,21 @@ const reviews: { quote: ReactNode; name: string; role: string; avatar: string }[
         경영진이 현장 상황을 즉시 파악합니다.
       </>
     ),
-    name: '최은영',
-    role: '제조기업 혁신실장',
-    avatar: '/assets/review-profile-5.png',
-  },
-  {
-    quote: (
-      <>
-        개발자 없이도 비즈니스 로직을 빠르게 수정할 수 있어서
-        <br />
-        시장 변화에 민첩하게 대응하고 있습니다.
-      </>
-    ),
-    name: '정태훈',
-    role: '물류 스타트업 CTO',
-    avatar: '/assets/review-profile-5.png',
-  },
-  {
-    quote: (
-      <>
-        고객 문의부터 배송, CS까지 모든 것이 연결되어
-        <br />
-        업무 효율이 비약적으로 향상되었습니다.
-      </>
-    ),
-    name: '강혜진',
-    role: '커머스 기업 COO',
-    avatar: '/assets/review-profile-5.png',
-  },
-  {
-    quote: (
-      <>
-        초기 상담에서 우리의 요구를 정확히 이해하고, 이에 맞춘 최적의 솔루션을 제시해 주었습니다.
-        <br />
-        결과물에 매우 만족하며, 앞으로도 신뢰할 수 있는 퓨처바이저를 선택할 것입니다.
-      </>
-    ),
-    name: '신○○ 팀장',
-    role: '엘르',
-    avatar: '/assets/엘르.png',
-  },
-  {
-    quote: (
-      <>
-        처음 문의 드렸을 때부터 친절하게 상담해주셨고 작업하면서도
-        <br />
-        중간에 확인시켜주고 잘 응대해주셔서 감사합니다. 답장도 매우 빠르구요!
-      </>
-    ),
-    name: '석○○ 연구원',
-    role: '테크다스',
-    avatar: '/assets/테크다스.png',
-  },
-  {
-    quote: (
-      <>
-        굉장히 전문적이고 구조적이며 진심으로 작업을 신경써서 해주시는게 느껴졌습니다.
-        <br />
-        빠른 대처에도 감사드립니다.
-      </>
-    ),
-    name: '최○○ 책임연구원',
-    role: 'SK 쉘더스',
+    name: '최○○',
+    title: '책임연구원',
+    role: 'SK 쉴더스',
     avatar: '/assets/sk 쉴더스.png',
   },
   {
     quote: (
       <>
-        신규 사업 초기라 체계적이지 않은 부분이 컸는데 잘 이끌어 주셔서 감사합니다.
+        주문부터 정산, 송장 발송까지 모든 프로세스가 자동화되면서
         <br />
-        디자인 및 개발까지 원하는 방향으로 잘 나온 것 같습니다.
+        실무자의 업무 부담이 70% 이상 줄었습니다.
       </>
     ),
-    name: '신○○ 이사',
+    name: '신○○',
+    title: '과장',
     role: 'LPLABS',
     avatar: '/assets/lplabs.png',
   },
@@ -129,34 +61,13 @@ const reviews: { quote: ReactNode; name: string; role: string; avatar: string }[
         전문성과 친절한 태도에 즐겁게 마무리 할 수 있었습니다.
       </>
     ),
-    name: '이○○ 수석',
+    name: '이○○',
+    title: '수석',
     role: 'NETIVE RED',
     avatar: '/assets/netivered.png',
   },
-  {
-    quote: (
-      <>
-        처음 상담부터 우리 요구사항을 정확히 파악하고 기술 및 방향을 제안해주셨습니다.
-        <br />
-        지속적인 진행 상황 확인 덕분에 큰 어려움 없이 목표를 달성할 수 있었습니다.
-      </>
-    ),
-    name: '박○○ 대표',
-    role: '비공개',
-    avatar: '/assets/review-profile-5.png',
-  },
 ]
 
-const clientLogos = [
-  { src: '/assets/테크다스.png', alt: '테크다스' },
-  { src: '/assets/엘르.png', alt: '엘르' },
-  { src: '/assets/에이프릴.png', alt: '에이프릴' },
-  { src: '/assets/나인테크.png', alt: '나인테크' },
-  { src: '/assets/sk 쉴더스.png', alt: 'SK 쉴더스' },
-  { src: '/assets/sk C&C.png', alt: 'SK C&C' },
-  { src: '/assets/netivered.png', alt: 'NETIVE RED' },
-  { src: '/assets/lplabs.png', alt: 'LPLABS' },
-]
 
 const trustCards = [
   {
@@ -319,7 +230,10 @@ function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
           decoding="async"
         />
         <div className="min-w-0 text-left">
-          <p className="font-semibold text-slate-900">{r.name}</p>
+          <p className="font-semibold text-slate-900">
+            {r.name}{' '}
+            <span className="font-normal text-slate-500">{r.title}</span>
+          </p>
           <p className="text-xs text-slate-500">{r.role}</p>
         </div>
       </div>
@@ -338,20 +252,6 @@ export function ReviewTrustFaqSection() {
           <p className="mt-4 text-slate-600">
             FutureVisor와 함께 비즈니스를 혁신한 기업들의 실제 후기
           </p>
-        </div>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 px-8 md:gap-4">
-          {clientLogos.map((logo) => (
-            <img
-              key={logo.alt}
-              src={logo.src}
-              alt={logo.alt}
-              width={56}
-              height={56}
-              className="h-14 w-14 object-contain opacity-80 transition hover:opacity-100"
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
         </div>
         <div
           className="relative mt-12 w-full overflow-x-hidden overflow-y-visible pb-4 motion-reduce:overflow-x-auto"

@@ -47,7 +47,7 @@ main {
 .review-marquee-track {
   display: flex;
   width: max-content;
-  animation: review-marquee 75s linear infinite;
+  animation: review-marquee 37s linear infinite;
 }
 
 .review-marquee-track:hover {
