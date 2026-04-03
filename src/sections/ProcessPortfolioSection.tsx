@@ -50,7 +50,7 @@ const portfolioSlides: PortfolioSlide[] = [
     tag: '재고 관리 시스템',
     description:
       '수작업으로 처리하던 재고 관리 업무를 완전 자동화하여 실시간으로 재고 현황을 파악하고, 정확한 의사결정을 지원하는 통합 시스템을 구축했습니다.',
-    images: ['/assets/image(a사포트폴리오1).png', '/assets/image(a사포트폴리오2).png'],
+    images: ['/assets/정산관리포트폴리오1.png', '/assets/image(a사포트폴리오2).png'],
     imageAlts: ['A사 포트폴리오 화면 1', 'A사 포트폴리오 화면 2'],
     results: ['업무 시간 80% 감소', '재고 정확도 99% 향상', '실시간 현황 파악'],
   },
@@ -205,8 +205,28 @@ export function ProcessPortfolioSection() {
                   {p.description}
                 </p>
                 <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-                  {/* 비스듬하게 포개진 이미지 */}
-                  <div className="relative h-[200px] flex-1 sm:h-[240px] md:h-[280px] lg:h-[320px]">
+                  {/* 모바일: 2열 그리드 */}
+                  <div className={`grid grid-cols-2 gap-3 lg:hidden`}>
+                    {[0, 1].map((i) => (
+                      <div
+                        key={i}
+                        className={`overflow-hidden rounded-[14px] ${
+                          isDark
+                            ? 'border border-slate-600/50 shadow-lg'
+                            : 'border border-slate-200/80 shadow-sm'
+                        }`}
+                      >
+                        <img
+                          src={p.images[i]}
+                          alt={p.imageAlts[i]}
+                          className="aspect-video w-full object-cover object-top"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {/* 데스크톱: 포개기 레이아웃 */}
+                  <div className="relative hidden h-[320px] flex-1 lg:block">
                     <div
                       className={`absolute left-0 top-0 w-[82%] overflow-hidden rounded-[14px] shadow-lg ${
                         isDark
