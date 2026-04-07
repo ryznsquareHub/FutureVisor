@@ -148,15 +148,11 @@ export function Header() {
 
   return (
     <>
-      <div
-        className={`shrink-0 overflow-hidden transition-[height] duration-300 ease-out md:hidden ${
-          hideOnMobile ? 'h-0' : 'h-[84px]'
-        }`}
-        aria-hidden
-      />
+      {/* 모바일에서 fixed 헤더 아래 콘텐츠가 가리지 않도록 공간 확보 — 항상 84px 유지 */}
+      <div className="h-[84px] shrink-0 md:hidden" aria-hidden />
       <header
         className={`z-50 w-full border-b border-slate-100 bg-white/95 backdrop-blur-sm transition-transform duration-300 ease-out will-change-transform max-md:fixed max-md:left-0 max-md:right-0 max-md:top-0 md:sticky md:top-0 ${
-          hideOnMobile ? 'max-md:-translate-y-full' : 'translate-y-0'
+          hideOnMobile ? 'max-md:-translate-y-full' : 'max-md:translate-y-0'
         }`}
       >
         <div className="mx-auto flex h-[84px] max-w-[1400px] items-center justify-between px-8 lg:px-16">
