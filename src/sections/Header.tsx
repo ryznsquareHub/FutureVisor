@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 const nav = [
@@ -46,8 +46,40 @@ function MenuIcon({ open }: { open: boolean }) {
   )
 }
 
+const MD_BREAKPOINT = 768
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [headerHidden, setHeaderHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.innerWidth >= MD_BREAKPOINT) {
+        setHeaderHidden(false)
+        lastScrollY.current = window.scrollY
+        return
+      }
+      const y = window.scrollY
+      const delta = y - lastScrollY.current
+      lastScrollY.current = y
+      if (y < 12) {
+        setHeaderHidden(false)
+        return
+      }
+      if (delta > 8) setHeaderHidden(true)
+      else if (delta < -8) setHeaderHidden(false)
+    }
+    const onResize = () => {
+      if (window.innerWidth >= MD_BREAKPOINT) setHeaderHidden(false)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -112,9 +144,21 @@ export function Header() {
       document.body,
     )
 
+  const hideOnMobile = headerHidden && !menuOpen
+
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
+      <div
+        className={`shrink-0 overflow-hidden transition-[height] duration-300 ease-out md:hidden ${
+          hideOnMobile ? 'h-0' : 'h-[84px]'
+        }`}
+        aria-hidden
+      />
+      <header
+        className={`z-50 w-full border-b border-slate-100 bg-white/95 backdrop-blur-sm transition-transform duration-300 ease-out will-change-transform max-md:fixed max-md:left-0 max-md:right-0 max-md:top-0 md:sticky md:top-0 ${
+          hideOnMobile ? 'max-md:-translate-y-full' : 'translate-y-0'
+        }`}
+      >
         <div className="mx-auto flex h-[84px] max-w-[1400px] items-center justify-between px-8 lg:px-16">
           <Logo />
           <nav className="hidden items-center gap-10 md:flex" aria-label="주요 메뉴">

@@ -23,7 +23,7 @@ const ROTATING_HEADLINES = [
   '노코드의 한계를 넘어',
 ] as const
 
-const ROTATE_MS = 4500
+const ROTATE_MS = 2250
 
 export function Hero() {
   const [active, setActive] = useState(0)
@@ -60,7 +60,7 @@ export function Hero() {
               {ROTATING_HEADLINES.map((line, i) => (
                 <span
                   key={line}
-                  className={`absolute inset-x-0 top-0 flex justify-center overflow-visible transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+                  className={`absolute inset-x-0 top-0 flex justify-center overflow-visible transition-opacity duration-300 ease-out motion-reduce:transition-none ${
                     i === active ? 'opacity-100' : 'pointer-events-none opacity-0'
                   }`}
                   aria-hidden={i !== active}
