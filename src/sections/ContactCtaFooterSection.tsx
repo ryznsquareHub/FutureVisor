@@ -44,9 +44,14 @@ export function ContactCtaFooterSection() {
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
     if (!serviceId || !templateId || !publicKey) {
+      const missing = [
+        !serviceId && 'VITE_EMAILJS_SERVICE_ID',
+        !templateId && 'VITE_EMAILJS_TEMPLATE_ID',
+        !publicKey && 'VITE_EMAILJS_PUBLIC_KEY',
+      ].filter(Boolean).join(', ')
       setFormNotice({
         kind: 'error',
-        text: '메일 전송 설정이 필요합니다. VITE_EMAILJS_* 환경 변수를 확인해주세요.',
+        text: `메일 전송 설정 오류 — 누락된 환경변수: ${missing}`,
       })
       return
     }
@@ -90,10 +95,15 @@ export function ContactCtaFooterSection() {
         kind: 'success',
         text: '문의가 전송되었습니다. 빠르게 연락드리겠습니다.',
       })
-    } catch {
+    } catch (err: unknown) {
+      const status =
+        err && typeof err === 'object' && 'status' in err ? (err as { status: number }).status : null
+      const text =
+        err && typeof err === 'object' && 'text' in err ? (err as { text: string }).text : null
+      const detail = [status && `HTTP ${status}`, text].filter(Boolean).join(' — ')
       setFormNotice({
         kind: 'error',
-        text: '전송에 실패했습니다. 잠시 후 다시 시도하거나 이메일로 직접 연락해주세요.',
+        text: `전송 실패${detail ? `: ${detail}` : ''}. 잠시 후 다시 시도하거나 이메일로 직접 연락해주세요.`,
       })
     } finally {
       setSending(false)
