@@ -45,14 +45,14 @@ type PortfolioSlide = {
 const portfolioSlides: PortfolioSlide[] = [
   {
     theme: 'dark',
-    company: 'A사',
-    subtitle: '재고 관리 시스템 자동화',
-    tag: '재고 관리 시스템',
+    company: 'CJ WITH AI',
+    subtitle: 'AI 시스템 CJ 빅데이터',
+    tag: 'AI 빅데이터 시스템',
     description:
-      '수작업으로 처리하던 재고 관리 업무를 완전 자동화하여 실시간으로 재고 현황을 파악하고, 정확한 의사결정을 지원하는 통합 시스템을 구축했습니다.',
-    images: ['/assets/정산관리포트폴리오1.png', '/assets/image(a사포트폴리오2).png'],
-    imageAlts: ['A사 포트폴리오 화면 1', 'A사 포트폴리오 화면 2'],
-    results: ['업무 시간 80% 감소', '재고 정확도 99% 향상', '실시간 현황 파악'],
+      'CJ그룹의 방대한 데이터를 AI로 분석하여 비즈니스 인사이트를 도출하고, 의사결정을 지원하는 통합 빅데이터 플랫폼을 구축했습니다.',
+    images: ['/assets/image(cjwithai포트폴리오1).png', '/assets/image(cjwithai포트폴리오2).png'],
+    imageAlts: ['CJ WITH AI 포트폴리오 1', 'CJ WITH AI 포트폴리오 2'],
+    results: ['의사결정 속도 3배 향상', '데이터 활용도 85% 증가', '비용 절감 40%'],
   },
   {
     theme: 'light',
@@ -67,14 +67,14 @@ const portfolioSlides: PortfolioSlide[] = [
   },
   {
     theme: 'dark',
-    company: 'CJ WITH AI',
-    subtitle: 'AI 시스템 CJ 빅데이터',
-    tag: 'AI 빅데이터 시스템',
+    company: 'A사',
+    subtitle: '재고 관리 시스템 자동화',
+    tag: '재고 관리 시스템',
     description:
-      'CJ그룹의 방대한 데이터를 AI로 분석하여 비즈니스 인사이트를 도출하고, 의사결정을 지원하는 통합 빅데이터 플랫폼을 구축했습니다.',
-    images: ['/assets/image(cjwithai포트폴리오1).png', '/assets/image(cjwithai포트폴리오2).png'],
-    imageAlts: ['CJ WITH AI 포트폴리오 1', 'CJ WITH AI 포트폴리오 2'],
-    results: ['의사결정 속도 3배 향상', '데이터 활용도 85% 증가', '비용 절감 40%'],
+      '수작업으로 처리하던 재고 관리 업무를 완전 자동화하여 실시간으로 재고 현황을 파악하고, 정확한 의사결정을 지원하는 통합 시스템을 구축했습니다.',
+    images: ['/assets/정산관리포트폴리오1.png', '/assets/image(a사포트폴리오2).png'],
+    imageAlts: ['A사 포트폴리오 화면 1', 'A사 포트폴리오 화면 2'],
+    results: ['업무 시간 80% 감소', '재고 정확도 99% 향상', '실시간 현황 파악'],
   },
   {
     theme: 'light',
