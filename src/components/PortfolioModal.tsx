@@ -394,7 +394,6 @@ function DetailView({
 
 export function PortfolioModal({ onClose }: Props) {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
-  const scrollRef = { list: 0 }
 
   useEffect(() => {
     const prev = document.body.style.overflow
