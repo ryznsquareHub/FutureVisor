@@ -230,9 +230,8 @@ const portfolioItems: PortfolioItem[] = [
   {
     company: '삼성전자, 삼성페이 운영',
     tags: ['기업 내부시스템'],
-    image: '',
+    image: '/assets/portfolio/samsung.png',
     siteUrl: '',
-    note: '내부 시스템은 별도 문의 부탁드립니다.',
   },
   {
     company: 'SK 하이닉스, 지식블로그 개발 및 운영',
