@@ -273,12 +273,6 @@ export function ContactCtaFooterSection() {
             >
               상담 신청하기
             </a>
-            <button
-              type="button"
-              className="inline-flex min-w-[172px] justify-center rounded-full border-2 border-white/80 bg-transparent px-8 py-4 text-base font-bold text-white hover:bg-white/10"
-            >
-              자료 다운로드
-            </button>
           </div>
         </div>
         </div>

@@ -3,13 +3,7 @@ import type { ReactNode } from 'react'
 const painPoints: { key: string; title: ReactNode; body: string; iconSrc: string }[] = [
   {
     key: 'scattered-tools',
-    title: (
-      <>
-        엑셀·카톡·구글시트에 흩어진
-        <br />
-        업무
-      </>
-    ),
+    title: '엑셀·카톡·구글시트에 흩어진 업무',
     body: '반복 입력과 중복 기록으로 시간이 새어 나가고, 인수인계와 관리가 점점 어려워집니다.',
     iconSrc: '/assets/엑셀카톡구글시트.png',
   },
