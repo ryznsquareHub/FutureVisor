@@ -5,6 +5,7 @@ type PortfolioItem = {
   tags: string[]
   image: string
   siteUrl: string
+  note?: string
 }
 
 const portfolioItems: PortfolioItem[] = [
@@ -158,6 +159,87 @@ const portfolioItems: PortfolioItem[] = [
     image: '/assets/portfolio/litchaud.png',
     siteUrl: 'https://litchaud.com/',
   },
+  {
+    company: '비즈웨이브',
+    tags: ['랜딩 홈페이지', 'UX / UI 디자인', '퍼블'],
+    image: '/assets/portfolio/bizwave.png',
+    siteUrl: 'https://vizwave.co.kr/',
+  },
+  {
+    company: '준엔지니어링',
+    tags: ['랜딩 홈페이지', 'UX / UI 디자인', '퍼블'],
+    image: '/assets/portfolio/jun-eng.png',
+    siteUrl: 'http://jun-eng.kr/',
+  },
+  {
+    company: '울산항만공사',
+    tags: ['랜딩 홈페이지', 'UX / UI 디자인', '퍼블'],
+    image: '/assets/portfolio/ulsan-port.png',
+    siteUrl: '',
+  },
+  {
+    company: '커머스 + 게임(유니티) APP',
+    tags: ['앱 · 모바일'],
+    image: '/assets/portfolio/commerce-game.png',
+    siteUrl: '',
+  },
+  {
+    company: 'KX 이노베이션 리뉴얼',
+    tags: ['기업 내부시스템'],
+    image: '/assets/portfolio/kx-innovation.png',
+    siteUrl: '',
+  },
+  {
+    company: 'LG S&I 홈페이지 유지보수',
+    tags: ['랜딩 홈페이지', '기업 내부시스템'],
+    image: '/assets/portfolio/lg-sni.png',
+    siteUrl: '',
+  },
+  {
+    company: '테크다스 AI 대기 MES 솔루션',
+    tags: ['기업 내부시스템', 'UX / UI 디자인', '퍼블', '솔루션'],
+    image: '',
+    siteUrl: '',
+    note: '내부 시스템은 별도 문의 부탁드립니다.',
+  },
+  {
+    company: 'LG XI 홈페이지 유지보수',
+    tags: ['랜딩 홈페이지'],
+    image: '/assets/portfolio/lg-xi.png',
+    siteUrl: 'https://www.xi.co.kr/',
+  },
+  {
+    company: '컬리 관리자 페이지 리뉴얼',
+    tags: ['기업 내부시스템', '솔루션', '쇼핑몰'],
+    image: '',
+    siteUrl: '',
+    note: '내부 시스템은 별도 문의 부탁드립니다.',
+  },
+  {
+    company: 'SK 쉴더스',
+    tags: ['기업 내부시스템', '솔루션'],
+    image: '/assets/portfolio/sk-shielders.png',
+    siteUrl: '',
+  },
+  {
+    company: 'SK C&C, 하이닉스 MES 프로젝트',
+    tags: ['기업 내부시스템', '솔루션'],
+    image: '/assets/portfolio/sk-cnc.png',
+    siteUrl: '',
+  },
+  {
+    company: '삼성전자, 삼성페이 운영',
+    tags: ['기업 내부시스템'],
+    image: '',
+    siteUrl: '',
+    note: '내부 시스템은 별도 문의 부탁드립니다.',
+  },
+  {
+    company: 'SK 하이닉스, 지식블로그 개발 및 운영',
+    tags: ['기업 내부시스템', '솔루션'],
+    image: '/assets/portfolio/sk-hynix.png',
+    siteUrl: '',
+  },
 ]
 
 type Props = {
@@ -243,14 +325,29 @@ function DetailView({
         </div>
 
         {/* 메인 이미지 */}
-        <div className="mt-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900 shadow-2xl">
-          <img
-            src={item.image}
-            alt={item.company}
-            className="w-full object-cover object-top"
-            loading="lazy"
-          />
-        </div>
+        {item.image ? (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900 shadow-2xl">
+            <img
+              src={item.image}
+              alt={item.company}
+              className="w-full object-cover object-top"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="mt-8 flex min-h-[240px] items-center justify-center rounded-2xl border border-slate-700/50 bg-slate-900/60 shadow-2xl">
+            <div className="text-center">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="mx-auto text-slate-600" aria-hidden="true">
+                <rect x="6" y="10" width="36" height="28" rx="4" stroke="currentColor" strokeWidth="2"/>
+                <circle cx="18" cy="22" r="4" stroke="currentColor" strokeWidth="2"/>
+                <path d="M6 32l10-8 8 7 6-5 12 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <p className="mt-4 text-sm font-medium text-slate-400">
+                {item.note ?? '내부 시스템은 별도 문의 부탁드립니다.'}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* 사이트 링크 */}
         {item.siteUrl && (
@@ -367,12 +464,18 @@ export function PortfolioModal({ onClose }: Props) {
                     className="group relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/40 text-left transition hover:border-brand-500/50 hover:shadow-lg hover:shadow-brand-500/10"
                   >
                     <div className="aspect-video overflow-hidden bg-slate-800">
-                      <img
-                        src={item.image}
-                        alt={item.company}
-                        className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.company}
+                          className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-slate-800/80">
+                          <span className="text-xs text-slate-500">별도 문의</span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-5">
                       <div className="flex items-start justify-between gap-2">
