@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type PortfolioItem = {
   company: string
@@ -394,6 +394,26 @@ function DetailView({
 
 export function PortfolioModal({ onClose }: Props) {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  useEffect(() => {
+    // 뒤로가기 버튼으로 모달을 닫을 수 있도록 URL 해시 추가
+    window.history.pushState({ portfolioModal: true }, '', '#portfolio-modal')
+
+    const onPopState = () => {
+      onCloseRef.current()
+    }
+    window.addEventListener('popstate', onPopState)
+
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      // X 버튼 등 직접 닫기 시: 해시를 조용히 제거 (popstate 발생 없음)
+      if (window.location.hash === '#portfolio-modal') {
+        window.history.replaceState({}, '', window.location.pathname + window.location.search)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const prev = document.body.style.overflow
@@ -426,7 +446,14 @@ export function PortfolioModal({ onClose }: Props) {
           {/* 목록 헤더 */}
           <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-700/50 bg-[#0a0f1e]/95 px-6 py-4 backdrop-blur-sm md:px-12">
             <div className="flex items-center gap-3">
-              <img src="/assets/logo.png" alt="FutureVisor" className="h-5 object-contain" />
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="홈으로 이동"
+                className="transition hover:opacity-70"
+              >
+                <img src="/assets/logo.png" alt="FutureVisor" className="h-5 object-contain" />
+              </button>
               <span className="text-sm font-medium text-slate-400">포트폴리오</span>
               <span className="rounded-full bg-brand-500/20 px-2.5 py-0.5 text-xs font-bold text-brand-400">
                 {portfolioItems.length}

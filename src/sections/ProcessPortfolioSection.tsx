@@ -99,7 +99,7 @@ export function ProcessPortfolioSection() {
   const goPrev = () => setSlide((i) => (i - 1 + len) % len)
   const goNext = () => setSlide((i) => (i + 1) % len)
 
-  const isDark = p.theme === 'dark'
+  const isDark = true
 
   return (
     <>

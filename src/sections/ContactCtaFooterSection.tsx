@@ -290,6 +290,12 @@ export function ContactCtaFooterSection() {
               decoding="async"
             />
             <p className="mt-3 text-sm text-slate-400">© 2025 FutureVisor. All rights reserved.</p>
+            <p className="mt-1 text-sm text-slate-400">
+              Contact |{' '}
+              <a href="tel:0507-1477-6607" className="transition hover:text-white">
+                0507-1477-6607
+              </a>
+            </p>
           </div>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-400">
             <a href="#" className="transition hover:text-white">
