@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import EndToEndProcessFlow from '../components/EndToEndProcessFlow'
+import { PortfolioModal } from '../components/PortfolioModal'
 
 const steps = [
   {
@@ -91,6 +92,7 @@ const portfolioSlides: PortfolioSlide[] = [
 
 export function ProcessPortfolioSection() {
   const [slide, setSlide] = useState(0)
+  const [modalOpen, setModalOpen] = useState(false)
   const p = portfolioSlides[slide]
   const len = portfolioSlides.length
 
@@ -318,9 +320,22 @@ export function ProcessPortfolioSection() {
                 decoding="async"
               />
             </button>
+
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+            >
+              더 많은 포트폴리오 보기
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
+
+      {modalOpen && <PortfolioModal onClose={() => setModalOpen(false)} />}
     </>
   )
 }
