@@ -211,9 +211,8 @@ const portfolioItems: PortfolioItem[] = [
   {
     company: '컬리 관리자 페이지 리뉴얼',
     tags: ['기업 내부시스템', '솔루션', '쇼핑몰'],
-    image: '',
+    image: '/assets/portfolio/kurly.png',
     siteUrl: '',
-    note: '내부 시스템은 별도 문의 부탁드립니다.',
   },
   {
     company: 'SK 쉴더스',
