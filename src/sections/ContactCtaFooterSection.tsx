@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
 
 /** EmailJS 템플릿의 Bcc 필드에 `{{bcc}}` 를 넣어야 복사 수신됩니다. */
@@ -29,11 +29,30 @@ export function ContactCtaFooterSection() {
   const [email, setEmail] = useState('')
   const [budget, setBudget] = useState('')
   const [message, setMessage] = useState('')
+  const [details, setDetails] = useState('')
+  const [step, setStep] = useState<1 | 2>(1)
   const [sending, setSending] = useState(false)
   const [formNotice, setFormNotice] = useState<{
     kind: 'success' | 'error'
     text: string
   } | null>(null)
+
+  const step1Ready = useMemo(
+    () => Boolean(company.trim() && phone.trim() && email.trim() && message.trim()),
+    [company, phone, email, message],
+  )
+
+  function goToStep2() {
+    setFormNotice(null)
+    if (!step1Ready) {
+      setFormNotice({
+        kind: 'error',
+        text: '회사명, 전화번호, 이메일, 자동화하고 싶은 업무는 필수입니다.',
+      })
+      return
+    }
+    setStep(2)
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -71,6 +90,8 @@ export function ContactCtaFooterSection() {
 
     setSending(true)
     try {
+      const detailsTrim = details.trim()
+      const composedMessage = detailsTrim ? `${messageTrim}\n\n[추가 상세]\n${detailsTrim}` : messageTrim
       await emailjs.send(
         serviceId,
         templateId,
@@ -80,7 +101,7 @@ export function ContactCtaFooterSection() {
           phone: phoneTrim,
           email: emailTrim,
           budget: budget.trim() || '(미입력)',
-          message: messageTrim,
+          message: composedMessage,
           bcc: INQUIRY_BCC,
         },
         { publicKey },
@@ -91,6 +112,8 @@ export function ContactCtaFooterSection() {
       setEmail('')
       setBudget('')
       setMessage('')
+      setDetails('')
+      setStep(1)
       setFormNotice({
         kind: 'success',
         text: '문의가 전송되었습니다. 빠르게 연락드리겠습니다.',
@@ -154,11 +177,50 @@ export function ContactCtaFooterSection() {
             </div>
           <div className="border-t border-slate-200 bg-white p-8 md:border-t-0 md:border-l md:p-12">
             <h3 className="text-2xl font-semibold text-slate-900 md:text-3xl">
-              어떤 업무를
+              60초면 신청 완료.
               <br />
-              <span className="text-brand-600">자동화하고 싶으신가요?</span>
+              <span className="text-brand-600">영업일 기준 24시간 내 회신.</span>
             </h3>
-            <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
+            <div className="mt-6 flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-[13px] leading-relaxed text-slate-700">
+              <span aria-hidden className="mt-0.5 text-base text-brand-600">ⓘ</span>
+              <p>
+                첫 업무 진단(컨설팅)은 <span className="font-bold text-slate-900">30만 원/H 유료</span>로 진행되며,
+                <br className="hidden md:inline" />
+                {' '}본 계약 체결 시 <span className="font-bold text-slate-900">전액 환급</span>됩니다.
+              </p>
+            </div>
+            <div className="mt-8 flex items-center gap-3" aria-label="신청 진행 단계">
+              <div className="flex flex-1 items-center gap-3">
+                <span
+                  className={
+                    'flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ' +
+                    (step === 1
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-emerald-500 text-white')
+                  }
+                  aria-current={step === 1 ? 'step' : undefined}
+                >
+                  {step === 1 ? '1' : '✓'}
+                </span>
+                <span className="text-sm font-semibold text-slate-800">필수 정보</span>
+              </div>
+              <div className="h-px flex-1 bg-slate-200" aria-hidden />
+              <div className="flex flex-1 items-center justify-end gap-3">
+                <span className="text-sm font-medium text-slate-500">선택 정보</span>
+                <span
+                  className={
+                    'flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ' +
+                    (step === 2
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-slate-200 text-slate-500')
+                  }
+                  aria-current={step === 2 ? 'step' : undefined}
+                >
+                  2
+                </span>
+              </div>
+            </div>
+            <form className="mt-6 space-y-6" onSubmit={handleSubmit} noValidate>
               {formNotice ? (
                 <p
                   role="status"
@@ -172,81 +234,131 @@ export function ContactCtaFooterSection() {
                   {formNotice.text}
                 </p>
               ) : null}
-              <div className="grid gap-6 md:grid-cols-2">
-                <label className="block text-sm">
-                  <span className="text-slate-600">회사명 (필수)</span>
-                  <input
-                    name="company"
-                    autoComplete="organization"
-                    value={company}
-                    onChange={(ev) => setCompany(ev.target.value)}
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                    placeholder="회사명 또는 운영하시는 팀명"
-                  />
-                </label>
-                <label className="block text-sm">
-                  <span className="text-slate-600">업종 (선택)</span>
-                  <input
-                    name="industry"
-                    value={industry}
-                    onChange={(ev) => setIndustry(ev.target.value)}
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                    placeholder="업종을 입력해주세요"
-                  />
-                </label>
-                <label className="block text-sm">
-                  <span className="text-slate-600">전화번호 (필수)</span>
-                  <input
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    value={phone}
-                    onChange={(ev) => setPhone(ev.target.value)}
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                    placeholder="연락 가능한 전화번호를 입력해주세요"
-                  />
-                </label>
-                <label className="block text-sm">
-                  <span className="text-slate-600">이메일 (필수)</span>
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    value={email}
-                    onChange={(ev) => setEmail(ev.target.value)}
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                    placeholder="연락 가능한 이메일 주소를 입력해주세요"
-                  />
-                </label>
-              </div>
-              <label className="block text-sm">
-                <span className="text-slate-600">예산 (선택)</span>
-                <input
-                  name="budget"
-                  value={budget}
-                  onChange={(ev) => setBudget(ev.target.value)}
-                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                  placeholder="가용 가능한 예산 금액을 입력해주세요"
-                />
-              </label>
-              <label className="block text-sm">
-                <span className="text-slate-600">문의내용 (필수)</span>
-                <textarea
-                  name="message"
-                  rows={5}
-                  value={message}
-                  onChange={(ev) => setMessage(ev.target.value)}
-                  className="mt-2 w-full resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
-                  placeholder="자동화하고 싶은 업무나 현재 겪고 계신 불편사항을 자세히 적어주세요"
-                />
-              </label>
-              <button
-                type="submit"
-                disabled={sending}
-                className="w-full rounded-full bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 py-4 text-base font-bold text-white shadow-md hover:opacity-95 disabled:pointer-events-none disabled:opacity-60"
-              >
-                {sending ? '전송 중…' : '문의하기'}
-              </button>
+
+              {step === 1 ? (
+                <div className="space-y-6">
+                  <label className="block text-sm">
+                    <span className="text-slate-600">회사명 (필수)</span>
+                    <input
+                      name="company"
+                      autoComplete="organization"
+                      value={company}
+                      onChange={(ev) => setCompany(ev.target.value)}
+                      className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                      placeholder="회사명 또는 운영하시는 팀명"
+                    />
+                  </label>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <label className="block text-sm">
+                      <span className="text-slate-600">전화번호 (필수)</span>
+                      <input
+                        name="phone"
+                        type="tel"
+                        autoComplete="tel"
+                        value={phone}
+                        onChange={(ev) => setPhone(ev.target.value)}
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                        placeholder="010-0000-0000"
+                      />
+                    </label>
+                    <label className="block text-sm">
+                      <span className="text-slate-600">이메일 (필수)</span>
+                      <input
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(ev) => setEmail(ev.target.value)}
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                        placeholder="name@company.com"
+                      />
+                    </label>
+                  </div>
+                  <label className="block text-sm">
+                    <span className="text-slate-600">자동화하고 싶은 업무 (필수, 한 줄)</span>
+                    <input
+                      name="message"
+                      value={message}
+                      onChange={(ev) => setMessage(ev.target.value)}
+                      className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                      placeholder="예) 주문→정산→송장 발송이 모두 수기로 돌아가요"
+                    />
+                  </label>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                      type="button"
+                      onClick={goToStep2}
+                      disabled={!step1Ready}
+                      className="inline-flex w-full items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-brand-500 hover:text-brand-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
+                    >
+                      업종·예산 추가하기 (선택) →
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={sending || !step1Ready}
+                      className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 px-8 py-3 text-sm font-bold text-white shadow-md hover:opacity-95 disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
+                    >
+                      {sending ? '전송 중…' : '바로 신청하기'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                    선택 정보를 입력하시면 더 정확한 진단 자료를 준비해드립니다. 비워두셔도 신청은
+                    가능합니다.
+                  </div>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <label className="block text-sm">
+                      <span className="text-slate-600">업종 (선택)</span>
+                      <input
+                        name="industry"
+                        value={industry}
+                        onChange={(ev) => setIndustry(ev.target.value)}
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                        placeholder="예) 패션 유통, 제조, IT 서비스"
+                      />
+                    </label>
+                    <label className="block text-sm">
+                      <span className="text-slate-600">예산 (선택)</span>
+                      <input
+                        name="budget"
+                        value={budget}
+                        onChange={(ev) => setBudget(ev.target.value)}
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                        placeholder="예) 1,000~3,000만 원"
+                      />
+                    </label>
+                  </div>
+                  <label className="block text-sm">
+                    <span className="text-slate-600">추가 상세 (선택)</span>
+                    <textarea
+                      name="details"
+                      rows={4}
+                      value={details}
+                      onChange={(ev) => setDetails(ev.target.value)}
+                      className="mt-2 w-full resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none ring-brand-500/30 focus:ring-2"
+                      placeholder="현재 사용 중인 도구·인력 구성·이상적 일정 등 자유롭게"
+                    />
+                  </label>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setStep(1)}
+                      className="inline-flex w-full items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-brand-500 hover:text-brand-600 sm:w-auto"
+                    >
+                      ← 이전 단계
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={sending || !step1Ready}
+                      className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 px-8 py-3 text-sm font-bold text-white shadow-md hover:opacity-95 disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
+                    >
+                      {sending ? '전송 중…' : '신청 보내기'}
+                    </button>
+                  </div>
+                </div>
+              )}
             </form>
           </div>
           </div>
@@ -257,21 +369,30 @@ export function ContactCtaFooterSection() {
           <div className="relative overflow-hidden rounded-[14px] bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 px-6 py-16 shadow-[0px_25px_50px_-12px_rgba(0,64,255,0.3)] md:px-12 md:py-20">
         <div className="relative z-10 mx-auto max-w-[900px] text-center text-white">
           <h2 className="text-3xl font-bold leading-tight md:text-5xl md:leading-tight">
-            우리 회사 업무,
-            <br />
-            진짜 자동화할 수 있을까요?
+            우리 회사도 가능한지,
+            <br className="hidden md:inline" />
+            {' '}30분이면 답이 나옵니다.
           </h2>
-          <p className="mx-auto mt-8 max-w-xl text-lg text-white/90">
-            심도 있는 업무 진단을 위해 첫 컨설팅은 유료(30만원/H)로 진행되며,
-            <br />
-            본 계약 체결 시 해당 금액은 전액 환급됩니다.
+          <p className="mx-auto mt-8 max-w-2xl text-lg text-white/90">
+            유료 진단(30만 원/H)으로 자동화 가능 범위 · 예상 비용 · 일정까지 산정합니다.
+            <br className="hidden md:inline" />
+            {' '}본 계약 시 진단 비용은 <span className="font-bold text-white">전액 환급</span>됩니다.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <a
               href="#contact"
               className="inline-flex min-w-[168px] justify-center rounded-full bg-white px-8 py-4 text-base font-bold text-brand-600 shadow-md hover:bg-slate-50"
             >
               상담 신청하기
+            </a>
+            <a
+              href="tel:0507-1477-6607"
+              className="inline-flex min-w-[168px] flex-col items-center justify-center rounded-full border border-white/40 bg-white/5 px-8 py-3 text-white backdrop-blur-sm transition hover:bg-white/15"
+            >
+              <span className="text-base font-semibold leading-tight">바로 통화하기</span>
+              <span className="text-xs font-medium leading-tight text-white/75">
+                (0507-1477-6607)
+              </span>
             </a>
           </div>
         </div>

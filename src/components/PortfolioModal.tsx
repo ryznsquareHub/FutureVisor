@@ -347,23 +347,6 @@ function DetailView({
           </div>
         )}
 
-        {/* 사이트 링크 */}
-        {item.siteUrl && (
-          <div className="mt-8 flex justify-center">
-            <a
-              href={item.siteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800 px-6 py-3 text-sm font-medium text-slate-300 transition hover:border-brand-500/60 hover:bg-slate-700 hover:text-white"
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 11L11 3M11 3H6.5M11 3v4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              사이트 방문하기
-            </a>
-          </div>
-        )}
-
         {/* 이전/다음 네비게이션 */}
         <div className="mt-12 grid grid-cols-2 gap-4">
           <button

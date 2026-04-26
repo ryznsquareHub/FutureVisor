@@ -249,22 +249,22 @@ export function StructureFlowSection() {
               <div className="mt-8 md:mt-9">
                 <div className="grid grid-cols-3 gap-2 text-center sm:gap-6 md:gap-8">
                   <div className="flex flex-col items-center gap-1.5">
-                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
-                      4+
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[28px] font-bold leading-none tracking-tight text-transparent md:text-[36px]">
+                      5주
                     </p>
-                    <p className="text-sm font-medium leading-tight text-[#45556c]">통합 기능</p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">사이클 단위</p>
                   </div>
                   <div className="flex flex-col items-center gap-1.5">
-                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
-                      1
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[28px] font-bold leading-none tracking-tight text-transparent md:text-[36px]">
+                      1,000만 원~
                     </p>
-                    <p className="text-sm font-medium leading-tight text-[#45556c]">플랫폼</p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">사이클 비용</p>
                   </div>
                   <div className="flex flex-col items-center gap-1.5">
-                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[36px] font-bold leading-none tracking-tight text-transparent md:text-[42px]">
-                      ∞
+                    <p className="bg-gradient-to-b from-brand-500 via-brand-600 to-brand-700 bg-clip-text text-[28px] font-bold leading-none tracking-tight text-transparent md:text-[36px]">
+                      대기업 PM
                     </p>
-                    <p className="text-sm font-medium leading-tight text-[#45556c]">가능성</p>
+                    <p className="text-sm font-medium leading-tight text-[#45556c]">직접 진행</p>
                   </div>
                 </div>
               </div>
@@ -282,8 +282,8 @@ export function StructureFlowSection() {
             </h2>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-slate-600">
               우선순위가 높은 핵심 프로세스부터 맞춤형으로 개발하여,
-              <br />
-              5주 사이클 단위로 기능을 점진적으로 확장합니다.
+              <br className="hidden md:inline" />
+              {' '}5주 사이클 단위로 기능을 점진적으로 확장합니다.
             </p>
           </div>
           <div className="mt-10 mx-auto grid max-w-sm grid-cols-2 gap-2 md:hidden">

@@ -6,7 +6,9 @@ import { SolutionSection } from './sections/SolutionSection'
 import { StructureFlowSection } from './sections/StructureFlowSection'
 import { ProcessPortfolioSection } from './sections/ProcessPortfolioSection'
 import { ReviewTrustFaqSection } from './sections/ReviewTrustFaqSection'
+import { PricingSection } from './sections/PricingSection'
 import { ContactCtaFooterSection } from './sections/ContactCtaFooterSection'
+import { MobileStickyCta } from './components/MobileStickyCta'
 
 export function FutureVisorLanding() {
   return (
@@ -20,8 +22,10 @@ export function FutureVisorLanding() {
         <StructureFlowSection />
         <ProcessPortfolioSection />
         <ReviewTrustFaqSection />
+        <PricingSection />
         <ContactCtaFooterSection />
       </main>
+      <MobileStickyCta />
     </div>
   )
 }

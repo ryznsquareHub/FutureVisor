@@ -52,6 +52,12 @@ const tableRows = [
     make: '부분 자동화가 필요한 중소기업',
     fv: '5~100명, 연 매출 10~150억 구간 기업',
   },
+  {
+    label: '가격대 (월/연 환산)',
+    zapier: '월 $20~$100 구독',
+    make: '월 $10~$300 구독',
+    fv: '1사이클(5주) 1,000만 원~ · 본 계약 시 진단비 환급',
+  },
 ]
 
 export function SolutionSection() {

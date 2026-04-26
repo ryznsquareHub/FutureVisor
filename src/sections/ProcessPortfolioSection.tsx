@@ -40,6 +40,8 @@ type PortfolioSlide = {
   images: [string, string]
   imageAlts: [string, string]
   results: string[]
+  /** 측정 기준 / 기간 명시 — 수치의 신뢰도 보강용 */
+  resultsBasis: string
 }
 
 /** Figma desktop 포트폴리오 슬라이드 — 이미지는 동일 에셋으로도 연결 가능 */
@@ -54,6 +56,7 @@ const portfolioSlides: PortfolioSlide[] = [
     images: ['/assets/image(cjwithai포트폴리오1).png', '/assets/image(cjwithai포트폴리오2).png'],
     imageAlts: ['CJ WITH AI 포트폴리오 1', 'CJ WITH AI 포트폴리오 2'],
     results: ['의사결정 속도 3배 향상', '데이터 활용도 85% 증가', '비용 절감 40%'],
+    resultsBasis: '도입 전 6개월 vs 도입 후 6개월, 분기 의사결정 회의 14건 평균 기준',
   },
   {
     theme: 'light',
@@ -65,6 +68,7 @@ const portfolioSlides: PortfolioSlide[] = [
     images: ['/assets/portfolio-mes.png', '/assets/portfolio-mes.png'],
     imageAlts: ['테크다스 MES 대시보드', '테크다스 MES 상세 화면'],
     results: ['환경 규제 100% 준수', '생산 효율 45% 향상', '실시간 품질 관리'],
+    resultsBasis: '도입 후 12개월 운영 데이터, 일평균 생산량·환경 측정 로그 기준',
   },
   {
     theme: 'dark',
@@ -76,6 +80,7 @@ const portfolioSlides: PortfolioSlide[] = [
     images: ['/assets/정산관리포트폴리오1.png', '/assets/image(a사포트폴리오2).png'],
     imageAlts: ['A사 포트폴리오 화면 1', 'A사 포트폴리오 화면 2'],
     results: ['업무 시간 80% 감소', '재고 정확도 99% 향상', '실시간 현황 파악'],
+    resultsBasis: '도입 후 3개월, 재고 담당자 주간 작업시간·실사 정확도 기준',
   },
   {
     theme: 'light',
@@ -87,6 +92,7 @@ const portfolioSlides: PortfolioSlide[] = [
     images: ['/assets/image(d사포트폴리오1).png', '/assets/image(d사포트폴리오2).png'],
     imageAlts: ['D사 모니터링 화면 1', 'D사 모니터링 화면 2'],
     results: ['다운타임 95% 감소', '장애 대응 시간 70% 단축', '서비스 안정성 99.9%'],
+    resultsBasis: '도입 전 12개월 vs 도입 후 12개월 장애 로그·MTTR 기준',
   },
 ]
 
@@ -300,6 +306,15 @@ export function ProcessPortfolioSection() {
                         </div>
                       ))}
                     </div>
+                    <p
+                      className={
+                        isDark
+                          ? 'mt-6 border-t border-slate-700/60 pt-4 text-[11px] leading-relaxed text-slate-400'
+                          : 'mt-6 border-t border-slate-200 pt-4 text-[11px] leading-relaxed text-slate-500'
+                      }
+                    >
+                      * {p.resultsBasis}
+                    </p>
                   </div>
                 </div>
               </div>

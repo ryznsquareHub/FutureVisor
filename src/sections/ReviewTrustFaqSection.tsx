@@ -100,8 +100,9 @@ const faqs: FaqItem[] = [
         <p>FutureVisor는 단순 자동화 툴이나 외주 개발이 아니라,</p>
         <p className="font-bold text-slate-900">
           기업의 핵심 업무 흐름을 분석하고,
-          <br />
-          5주 단위로 단계적으로 자동화·시스템화하는 기업 맞춤형 자동화·운영 시스템 구축 서비스입니다.
+          <br className="hidden md:inline" />
+          {' '}5주 단위로 단계적으로 자동화·시스템화하는 기업 맞춤형 자동화·운영 시스템 구축
+          서비스입니다.
         </p>
         <p>
           ERP, CRM, 재고·정산·보고 등 회사 운영에 직접 영향을 주는 업무를
@@ -171,14 +172,17 @@ const faqs: FaqItem[] = [
     question: '프로젝트 최소 비용은 어떻게 되나요?',
     answer: (
       <div className="space-y-2.5 text-[15.75px] leading-relaxed text-slate-600">
-        <p>FutureVisor는 단순 제작이 아닌</p>
-        <p className="font-bold text-slate-900">
-          업무 분석 + 자동화 설계 기반의 맞춤형 시스템 구축을 진행합니다.
+        <p>
+          1사이클(5주) 기준 <span className="font-bold text-slate-900">1,000만 원</span>부터 시작되며,
+          <br className="md:hidden" />
+          첫 진단(1H)은 30만 원 — 본 계약 체결 시 전액 환급됩니다.
         </p>
         <p>
-          프로젝트는 <span className="font-bold text-slate-900">1사이클 기준 1,000만원부터</span> 시작되며,
-          <br className="md:hidden" />
-          이는 품질, 운영 안정성, 지속 가능한 유지보수를 위한 최소 기준입니다.
+          단계별 패키지와 포함 산출물은{' '}
+          <a href="#pricing" className="font-bold text-brand-600 underline-offset-2 hover:underline">
+            가격/패키지 섹션
+          </a>
+          에서 확인하실 수 있습니다.
         </p>
       </div>
     ),
@@ -217,25 +221,28 @@ const REVIEW_CARD_CLASS =
 function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
   return (
     <article className={REVIEW_CARD_CLASS}>
-      <Stars />
-      <p className="mt-5 text-sm leading-relaxed text-slate-700">{r.quote}</p>
-      <div className="mt-auto flex items-center gap-3 pt-6">
-        <img
-          src={r.avatar}
-          alt={r.role}
-          width={48}
-          height={48}
-          className="h-12 w-12 shrink-0 rounded-xl object-contain"
-          loading="lazy"
-          decoding="async"
-        />
-        <div className="min-w-0 text-left">
-          <p className="font-semibold text-slate-900">
-            {r.name}{' '}
-            <span className="font-normal text-slate-500">{r.title}</span>
-          </p>
-          <p className="text-xs text-slate-500">{r.role}</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex h-12 items-center">
+          <img
+            src={r.avatar}
+            alt={`${r.role} 로고`}
+            className="h-10 w-auto max-w-[140px] object-contain"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
+        <Stars />
+      </div>
+      <p className="mt-5 text-sm leading-relaxed text-slate-700">{r.quote}</p>
+      <div className="mt-auto flex items-center gap-3 border-t border-slate-100 pt-5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          {r.role}
+        </p>
+        <span aria-hidden className="h-1 w-1 rounded-full bg-slate-300" />
+        <p className="text-sm font-semibold text-slate-900">
+          {r.name}{' '}
+          <span className="font-normal text-slate-500">{r.title}</span>
+        </p>
       </div>
     </article>
   )
@@ -275,7 +282,7 @@ export function ReviewTrustFaqSection() {
               증명되는 전문성
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-              신뢰할 수 있는 개발 파트너 FutureVisor이 귀사와 함께 동행합니다.
+              신뢰할 수 있는 개발 파트너 FutureVisor가 귀사와 함께 동행합니다.
             </p>
           </div>
           <div className="mt-14 overflow-hidden rounded-[14px] border border-slate-200 bg-slate-200 p-px">
