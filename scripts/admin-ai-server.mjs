@@ -23,6 +23,8 @@ app.use(
       'http://localhost:5174',
       'http://localhost:5188',
       'http://127.0.0.1:5173',
+      'https://www.futurevisor.co.kr',
+      'https://futurevisor.co.kr',
     ],
     allowedHeaders: ['Content-Type', 'x-fv-admin'],
   }),

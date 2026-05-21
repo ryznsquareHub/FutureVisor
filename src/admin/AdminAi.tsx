@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import type { PageView } from './types'
 
 type Props = {
@@ -9,7 +9,13 @@ type Props = {
 
 type Mode = 'yesterday-summary' | 'channel-compare'
 
-const AI_SERVER = 'http://localhost:3001'
+// 로컬 dev에서는 localhost, 프로덕션에서는 Tailscale Serve로 노출된 HTTPS 엔드포인트.
+// Tailscale이 깔려 있고 사용자 PC에서 `tailscale serve --bg 3001`이 떠 있어야 동작.
+const AI_SERVER =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3001'
+    : 'https://gj.tail93fb94.ts.net'
 
 function classifySource(r: PageView): string {
   if (r.utm_source) return `utm:${r.utm_source}${r.utm_medium ? `/${r.utm_medium}` : ''}`
@@ -239,13 +245,6 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [serverOk, setServerOk] = useState<boolean | null>(null)
 
-  const isLocalhost = useMemo(
-    () =>
-      typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'),
-    [],
-  )
-
   async function ping() {
     try {
       const res = await fetch(`${AI_SERVER}/healthz`, { method: 'GET' })
@@ -283,7 +282,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
     } catch (e) {
       const msg = (e as Error).message || String(e)
       if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
-        setError(`로컬 AI 서버에 연결 실패. 터미널에서 \`npm run ai:server\` 를 실행했는지 확인해주세요.`)
+        setError(
+          `AI 서버 연결 실패. PC에서 \`npm run ai:server\` 가 떠 있고 Tailscale이 활성화되어 있는지 확인해주세요. 다른 디바이스에서 접근 중이면 그 디바이스에도 Tailscale이 연결돼 있어야 합니다.`,
+        )
         setServerOk(false)
       } else {
         setError(msg)
@@ -291,23 +292,6 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
     } finally {
       setLoading(false)
     }
-  }
-
-  if (!isLocalhost) {
-    return (
-      <section className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-xs text-slate-500">
-        <div className="font-medium text-slate-700">AI 분석 위젯</div>
-        <p className="mt-1">
-          이 위젯은 로컬 개발 모드에서만 동작합니다. 터미널에서{' '}
-          <code className="rounded bg-white px-1 py-0.5 font-mono">npm run dev</code> 와{' '}
-          <code className="rounded bg-white px-1 py-0.5 font-mono">npm run ai:server</code> 를 함께 실행한 뒤{' '}
-          <code className="rounded bg-white px-1 py-0.5 font-mono">http://localhost:5173/admin</code> 으로 접속하세요.
-        </p>
-        <p className="mt-1">
-          (프로덕션 HTTPS 페이지에서 로컬 HTTP 서버를 호출하는 것은 브라우저가 차단합니다.)
-        </p>
-      </section>
-    )
   }
 
   return (
