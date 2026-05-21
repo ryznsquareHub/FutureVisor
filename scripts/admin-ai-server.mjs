@@ -10,7 +10,7 @@
 
 import express from 'express'
 import cors from 'cors'
-import { query } from '@anthropic-ai/claude-agent-sdk'
+import { spawn } from 'node:child_process'
 
 const PORT = Number(process.env.FV_AI_PORT || 3001)
 const MODEL = process.env.FV_AI_MODEL || 'claude-sonnet-4-6'
@@ -37,29 +37,35 @@ if (process.env.ANTHROPIC_API_KEY) {
   )
 }
 
+// Agent SDK 대신 claude CLI를 직접 spawn — 컨테이너/네이티브 모두에서 안정적으로 동작.
+// `claude -p <prompt> --model <model> --output-format json` 호출 후 JSON.result 반환.
 async function callClaude(prompt) {
-  let text = ''
-  let lastError = null
-  for await (const msg of query({
-    prompt,
-    options: {
-      model: MODEL,
-      maxTurns: 1,
-      allowedTools: [],
-      permissionMode: 'bypassPermissions',
-    },
-  })) {
-    if (msg.type === 'assistant' && msg.message?.content) {
-      for (const block of msg.message.content) {
-        if (block.type === 'text') text += block.text
+  return new Promise((resolve, reject) => {
+    const args = ['-p', prompt, '--model', MODEL, '--output-format', 'json']
+    const child = spawn('claude', args, {
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: process.env,
+    })
+    let stdout = ''
+    let stderr = ''
+    child.stdout.on('data', (chunk) => (stdout += chunk.toString()))
+    child.stderr.on('data', (chunk) => (stderr += chunk.toString()))
+    child.on('error', (e) => reject(new Error(`claude spawn 실패: ${e.message}`)))
+    child.on('close', (code) => {
+      if (code !== 0) {
+        return reject(new Error(`claude exit ${code}: ${stderr.slice(0, 500) || stdout.slice(0, 500)}`))
       }
-    }
-    if (msg.type === 'result' && msg.is_error) {
-      lastError = msg.result || 'unknown_error'
-    }
-  }
-  if (!text && lastError) throw new Error(lastError)
-  return text.trim()
+      try {
+        const json = JSON.parse(stdout)
+        if (json.is_error) {
+          return reject(new Error(json.result || 'claude_error'))
+        }
+        resolve((json.result || '').trim())
+      } catch (e) {
+        reject(new Error(`JSON 파싱 실패: ${e.message}. 원문: ${stdout.slice(0, 300)}`))
+      }
+    })
+  })
 }
 
 app.get('/healthz', (_req, res) => res.json({ ok: true, model: MODEL }))
