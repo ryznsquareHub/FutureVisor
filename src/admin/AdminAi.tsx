@@ -7,7 +7,7 @@ type Props = {
   rangeDays: number
 }
 
-type Mode = 'today-summary' | 'yesterday-summary' | 'channel-compare'
+type Mode = 'today-summary' | 'yesterday-summary' | 'today-vs-yesterday' | 'channel-compare'
 
 // 로컬 dev에서는 localhost, 프로덕션에서는 Tailscale Serve로 노출된 HTTPS 엔드포인트.
 // Tailscale이 깔려 있고 사용자 PC에서 `tailscale serve --bg 3001`이 떠 있어야 동작.
@@ -162,6 +162,64 @@ function buildTodaySummaryPayload(rows: PageView[]) {
       label: `어제 0시 ~ 어제 ${String(kstHourNow).padStart(2, '0')}:${String(kstMinNow).padStart(2, '0')}`,
       basics: aggregateBasics(yesterdaySameWindow),
       topSources: topN(yesterdaySameWindow, classifySource, 5),
+    },
+  }
+}
+
+function buildTodayVsYesterdayPayload(rows: PageView[]) {
+  const now = new Date()
+  const todayKst0 = startOfKstDay(now)
+  const yesterdayKst0 = new Date(todayKst0.getTime() - 24 * 60 * 60 * 1000)
+  const yesterdaySameWindowEnd = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+
+  const today = rowsInRange(rows, todayKst0, now)
+  const yesterdaySameWindow = rowsInRange(rows, yesterdayKst0, yesterdaySameWindowEnd)
+  const yesterdayFull = rowsInRange(rows, yesterdayKst0, todayKst0)
+
+  const kstNowParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(now)
+  const kstHourNow = Number(kstNowParts.find((p) => p.type === 'hour')!.value)
+  const kstMinNow = Number(kstNowParts.find((p) => p.type === 'minute')!.value)
+  const elapsedHours = Math.round((kstHourNow + kstMinNow / 60) * 10) / 10
+
+  const todayLabel = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+  }).format(todayKst0)
+  const yesterdayLabel = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+  }).format(yesterdayKst0)
+
+  return {
+    elapsedHours,
+    nowLabel: `${todayLabel} ${String(kstHourNow).padStart(2, '0')}:${String(kstMinNow).padStart(2, '0')} 기준`,
+    today: {
+      label: `오늘(${todayLabel}) 00:00 ~ 현재 (${elapsedHours}h)`,
+      basics: aggregateBasics(today),
+      topPaths: topN(today, (r) => r.path + (r.search || ''), 5),
+      topSources: topN(today, classifySource, 5),
+      devices: topN(today, (r) => r.device_type || 'unknown', 4),
+    },
+    yesterdaySameWindow: {
+      label: `어제(${yesterdayLabel}) 00:00 ~ 같은 시각까지 (${elapsedHours}h)`,
+      basics: aggregateBasics(yesterdaySameWindow),
+      topPaths: topN(yesterdaySameWindow, (r) => r.path + (r.search || ''), 5),
+      topSources: topN(yesterdaySameWindow, classifySource, 5),
+    },
+    yesterdayFull: {
+      label: `어제(${yesterdayLabel}) 전체 24시간`,
+      basics: aggregateBasics(yesterdayFull),
+      topPaths: topN(yesterdayFull, (r) => r.path + (r.search || ''), 5),
+      topSources: topN(yesterdayFull, classifySource, 5),
     },
   }
 }
@@ -340,7 +398,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
           ? buildTodaySummaryPayload(rows)
           : which === 'yesterday-summary'
             ? buildYesterdayPayload(rows)
-            : buildChannelPayload(rows, rangeDays)
+            : which === 'today-vs-yesterday'
+              ? buildTodayVsYesterdayPayload(rows)
+              : buildChannelPayload(rows, rangeDays)
 
       const res = await fetch(`${AI_SERVER}/api/ai/${which}`, {
         method: 'POST',
@@ -408,6 +468,13 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
           어제 트래픽 요약
         </button>
         <button
+          onClick={() => run('today-vs-yesterday')}
+          disabled={loading}
+          className="rounded-lg border border-emerald-600 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-100 disabled:opacity-50"
+        >
+          오늘 ↔ 어제 비교
+        </button>
+        <button
           onClick={() => run('channel-compare')}
           disabled={loading}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
@@ -426,7 +493,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
               ? '오늘 데이터'
               : mode === 'yesterday-summary'
                 ? '어제 데이터'
-                : '채널 데이터'}{' '}
+                : mode === 'today-vs-yesterday'
+                  ? '오늘 ↔ 어제 비교'
+                  : '채널 데이터'}{' '}
             처리 중)
           </span>
         </div>

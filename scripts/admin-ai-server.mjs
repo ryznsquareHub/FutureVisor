@@ -77,6 +77,54 @@ const adminGate = (req, res, next) => {
   next()
 }
 
+app.post('/api/ai/today-vs-yesterday', adminGate, async (req, res) => {
+  try {
+    const data = req.body || {}
+    const prompt = `당신은 그로스 마케팅 데이터 분석가입니다. 아래는 FutureVisor 랜딩 사이트 (futurevisor.co.kr — 기업 맞춤 자동화 시스템 구축 B2B 서비스)의 **오늘 vs 어제** 트래픽 비교 데이터입니다.
+
+세 가지 묶음이 있습니다:
+- **today**: 오늘 00:00 ~ 현재(${data.elapsedHours ?? '?'}시간 경과)까지 진행 중 데이터
+- **yesterdaySameWindow**: 어제 00:00 ~ 어제 같은 시각까지의 누적 (today와 동일 윈도우)
+- **yesterdayFull**: 어제 0시 ~ 24시 전체
+
+다음 형식으로 마크다운, 한국어로 답해주세요:
+
+### 한 줄 요약
+(같은 윈도우 기준 today vs yesterdaySameWindow 핵심 지표 비교를 한 문장으로 — "어제 같은 시간 대비 ±X%" 같이)
+
+### 비교 표
+| 지표 | 오늘 (진행 중) | 어제 같은 시간까지 | 어제 전체 | 추세 |
+|---|---|---|---|---|
+| 방문자 | ... | ... | ... | ↑/↓/→ |
+| PV | ... | ... | ... | ↑/↓/→ |
+| 평균 체류(초) | ... | ... | ... | ↑/↓/→ |
+| 바운스율 | ... | ... | ... | ↑/↓/→ |
+
+(today와 yesterdaySameWindow 비교가 "추세" 컬럼의 핵심)
+
+### 변화 포인트
+- (오늘 유입 채널이 어제와 어떻게 다른지)
+- (오늘 뜨고 있는/식고 있는 페이지 — top paths 비교)
+- (체류·바운스 품질 변화)
+
+### 오늘 안 액션
+- (남은 시간에 시도할 가장 임팩트 있는 액션 1개, 구체적으로)
+- (다음 24시간 추적 우선순위 1개)
+
+데이터 양이 적으면(전체 PV 10 미만) 솔직히 인정하고, "비교 자체가 노이즈 수준이지만 그래도 읽을 수 있는 점은…" 식으로 신중하게 다루세요. 같은 윈도우 비교가 의사결정에 가장 유용하다는 사실을 기억하세요. 데이터에 없는 사실 지어내지 마세요.
+
+데이터:
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``
+    const md = await callClaude(prompt)
+    res.json({ markdown: md })
+  } catch (e) {
+    console.error('[fv-ai] today-vs-yesterday 에러:', e)
+    res.status(500).json({ error: String(e?.message || e) })
+  }
+})
+
 app.post('/api/ai/today-summary', adminGate, async (req, res) => {
   try {
     const data = req.body || {}
