@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../lib/supabase'
 import type { PageView } from './types'
 
 type Props = {
@@ -7,7 +8,12 @@ type Props = {
   rangeDays: number
 }
 
-type Mode = 'today-summary' | 'yesterday-summary' | 'today-vs-yesterday' | 'channel-compare'
+type Mode =
+  | 'today-summary'
+  | 'yesterday-summary'
+  | 'today-vs-yesterday'
+  | 'weekly-trend'
+  | 'channel-compare'
 
 // 로컬 dev에서는 localhost, 프로덕션에서는 Tailscale Serve로 노출된 HTTPS 엔드포인트.
 // Tailscale이 깔려 있고 사용자 PC에서 `tailscale serve --bg 3001`이 떠 있어야 동작.
@@ -163,6 +169,99 @@ function buildTodaySummaryPayload(rows: PageView[]) {
       basics: aggregateBasics(yesterdaySameWindow),
       topSources: topN(yesterdaySameWindow, classifySource, 5),
     },
+  }
+}
+
+function buildWeeklyTrendPayload(rows: PageView[]) {
+  const now = new Date()
+  const todayKst0 = startOfKstDay(now)
+
+  // 최근 7일 (오늘 0시 ~ 7일전 0시)
+  const thisWeekStart = new Date(todayKst0.getTime() - 7 * 24 * 60 * 60 * 1000)
+  const prevWeekStart = new Date(todayKst0.getTime() - 14 * 24 * 60 * 60 * 1000)
+
+  const thisWeekRows = rowsInRange(rows, thisWeekStart, todayKst0)
+  const prevWeekRows = rowsInRange(rows, prevWeekStart, thisWeekStart)
+
+  const dayFmt = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+  })
+
+  // 일자별 분해 (KST 기준)
+  const daysWithData = new Set<string>()
+  const dailyBreakdown: Array<{
+    date: string
+    visitors: number
+    pageViews: number
+    sessions: number
+    avgDurationSec: number
+    bounceRate: number
+    topSources: { key: string; count: number }[]
+    topPaths: { key: string; count: number }[]
+  }> = []
+
+  for (let i = 6; i >= 0; i--) {
+    const dayStart = new Date(todayKst0.getTime() - (i + 1) * 24 * 60 * 60 * 1000)
+    const dayEnd = new Date(todayKst0.getTime() - i * 24 * 60 * 60 * 1000)
+    const dayRows = rowsInRange(rows, dayStart, dayEnd)
+    if (dayRows.length > 0) daysWithData.add(dayStart.toISOString().slice(0, 10))
+    const b = aggregateBasics(dayRows)
+    dailyBreakdown.push({
+      date: dayFmt.format(dayStart),
+      visitors: b.visitors,
+      pageViews: b.pageViews,
+      sessions: b.sessions,
+      avgDurationSec: b.avgDurationSec,
+      bounceRate: b.bounceRate,
+      topSources: topN(dayRows, classifySource, 3),
+      topPaths: topN(dayRows, (r) => r.path, 3),
+    })
+  }
+
+  // 요일 패턴 — 최근 14일치 데이터에서 요일별 평균 PV (날짜 샘플 수도 함께)
+  const allRowsLast14 = rowsInRange(rows, prevWeekStart, todayKst0)
+  const dowFmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    weekday: 'short',
+  })
+  const dowMap: Record<string, number> = {
+    Sun: 0,
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
+  }
+  const isoFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' })
+  const dowAggregate: Record<number, { pv: number; days: Set<string> }> = {}
+  for (const r of allRowsLast14) {
+    const d = new Date(r.entered_at)
+    const dow = dowMap[dowFmt.format(d)] ?? 0
+    if (!dowAggregate[dow]) dowAggregate[dow] = { pv: 0, days: new Set() }
+    dowAggregate[dow].pv++
+    dowAggregate[dow].days.add(isoFmt.format(d))
+  }
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+  const dayOfWeekPattern = dayNames.map((name, i) => {
+    const agg = dowAggregate[i]
+    const dayCount = agg?.days.size ?? 0
+    const avgPv = agg && dayCount > 0 ? Math.round((agg.pv / dayCount) * 10) / 10 : 0
+    return { dayOfWeek: name, sampleDays: dayCount, avgPv }
+  })
+
+  return {
+    rangeLabel: `최근 7일 (${dayFmt.format(thisWeekStart)} ~ ${dayFmt.format(new Date(todayKst0.getTime() - 24 * 60 * 60 * 1000))})`,
+    dataCompleteness: `${daysWithData.size}/7`,
+    thisWeekTotals: aggregateBasics(thisWeekRows),
+    previousWeekTotals: prevWeekRows.length > 0 ? aggregateBasics(prevWeekRows) : null,
+    dailyBreakdown,
+    dayOfWeekPattern,
+    topSourcesThisWeek: topN(thisWeekRows, classifySource, 8),
+    topPathsThisWeek: topN(thisWeekRows, (r) => r.path + (r.search || ''), 8),
   }
 }
 
@@ -393,14 +492,29 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
     setError(null)
     setMarkdown(null)
     try {
+      let workRows = rows
+      // 주간 트렌드는 14일치 데이터가 필요하므로 현재 필터 범위가 부족하면 별도 fetch
+      if (which === 'weekly-trend' && rangeDays < 14 && supabase) {
+        const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
+        const { data, error } = await supabase.rpc('fv_admin_page_views', {
+          p_token: adminToken,
+          p_since: since,
+          p_limit: 20000,
+        })
+        if (error) throw error
+        workRows = (data || []) as PageView[]
+      }
+
       const body =
         which === 'today-summary'
-          ? buildTodaySummaryPayload(rows)
+          ? buildTodaySummaryPayload(workRows)
           : which === 'yesterday-summary'
-            ? buildYesterdayPayload(rows)
+            ? buildYesterdayPayload(workRows)
             : which === 'today-vs-yesterday'
-              ? buildTodayVsYesterdayPayload(rows)
-              : buildChannelPayload(rows, rangeDays)
+              ? buildTodayVsYesterdayPayload(workRows)
+              : which === 'weekly-trend'
+                ? buildWeeklyTrendPayload(workRows)
+                : buildChannelPayload(workRows, rangeDays)
 
       const res = await fetch(`${AI_SERVER}/api/ai/${which}`, {
         method: 'POST',
@@ -475,6 +589,13 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
           오늘 ↔ 어제 비교
         </button>
         <button
+          onClick={() => run('weekly-trend')}
+          disabled={loading}
+          className="rounded-lg border border-violet-600 bg-violet-50 px-3 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-100 disabled:opacity-50"
+        >
+          7일 트렌드 분석
+        </button>
+        <button
           onClick={() => run('channel-compare')}
           disabled={loading}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
@@ -495,7 +616,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
                 ? '어제 데이터'
                 : mode === 'today-vs-yesterday'
                   ? '오늘 ↔ 어제 비교'
-                  : '채널 데이터'}{' '}
+                  : mode === 'weekly-trend'
+                    ? '7일 트렌드'
+                    : '채널 데이터'}{' '}
             처리 중)
           </span>
         </div>

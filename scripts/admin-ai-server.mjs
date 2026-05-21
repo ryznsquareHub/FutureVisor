@@ -77,6 +77,55 @@ const adminGate = (req, res, next) => {
   next()
 }
 
+app.post('/api/ai/weekly-trend', adminGate, async (req, res) => {
+  try {
+    const data = req.body || {}
+    const prompt = `당신은 그로스 마케팅 데이터 분석가입니다. 아래는 FutureVisor 랜딩 사이트 (futurevisor.co.kr — 기업 맞춤 자동화 시스템 구축 B2B 서비스)의 **최근 7일 트렌드** 데이터입니다.
+
+페이로드 구조:
+- **dailyBreakdown**: 최근 7일 (KST 기준), 날짜순. 각 일자별 방문자/PV/세션/평균체류/바운스/상위 유입/상위 페이지
+- **thisWeekTotals**: 최근 7일 누적
+- **previousWeekTotals**: 그 전 7일 누적 (없으면 null)
+- **dayOfWeekPattern**: 요일별 평균 PV (월~일)
+- **dataCompleteness**: 실제로 수집된 일자 수 / 7
+
+다음 형식으로 마크다운, 한국어로 답해주세요:
+
+### 한 줄 요약
+(주간 추세를 한 문장 — "지난 주 대비 ±X%", "상승/하락/정체", "어느 요일이 핵심" 등)
+
+### 일자별 추이
+| 날짜 (요일) | 방문자 | PV | 평균 체류 | 바운스 | 핵심 유입 |
+|---|---|---|---|---|---|
+| MM/DD (요일) | ... | ... | ... | ... | ... |
+
+(dailyBreakdown 배열의 모든 일자를 표로)
+
+### 패턴 진단
+- **요일 패턴**: (어느 요일이 강한지 — B2B는 보통 주중. 우리는 어떤지)
+- **추세 방향**: (7일 그래프 형태 — 상승/하락/평탄/스파이크)
+- **이번 주 vs 지난 주**: (있다면 비교)
+- **유입 채널 변화**: (Direct, 검색, SNS 비율 변화)
+
+### 다음 주 액션 (우선순위)
+- (가장 임팩트 큰 액션 1개, 데이터 근거 함께)
+- (실험해볼 만한 가설 1개)
+- (모니터링 강화 필요한 지표 1개)
+
+dataCompleteness가 7/7이 아니면 (예: 3일치만) 그 사실을 명시하고 신중하게 다루세요. 전체 PV가 30 미만이면 "패턴 단정 불가, 더 많은 데이터가 필요" 명확히 적어주세요. 데이터에 없는 사실 지어내지 마세요.
+
+데이터:
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``
+    const md = await callClaude(prompt)
+    res.json({ markdown: md })
+  } catch (e) {
+    console.error('[fv-ai] weekly-trend 에러:', e)
+    res.status(500).json({ error: String(e?.message || e) })
+  }
+})
+
 app.post('/api/ai/today-vs-yesterday', adminGate, async (req, res) => {
   try {
     const data = req.body || {}
