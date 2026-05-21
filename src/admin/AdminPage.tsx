@@ -6,6 +6,7 @@ import { HourDayHeatmap } from './charts/HourDayHeatmap'
 import { BarRanking } from './charts/BarRanking'
 import { DurationHistogram } from './charts/DurationHistogram'
 import { DonutChart } from './charts/DonutChart'
+import { AdminAi } from './AdminAi'
 
 const TOKEN_STORAGE_KEY = 'fv:admin_token'
 const RANGE_OPTIONS: { label: string; days: number }[] = [
@@ -317,6 +318,8 @@ VITE_SUPABASE_ANON_KEY=<publishable key>`}
           <KpiCard label="평균 체류" value={fmtDuration(kpis.avgMs)} />
           <KpiCard label="바운스율" value={`${kpis.bounceRate.toFixed(1)}%`} />
         </section>
+
+        <AdminAi rows={filteredRows} adminToken={token} rangeDays={rangeDays} />
 
         <Card title="기간 추세">
           {loading && rows.length === 0 ? (
