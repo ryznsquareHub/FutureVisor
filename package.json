@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:doppler": "doppler run -- vite",
     "build": "tsc && vite build",
+    "build:doppler": "doppler run -- npm run build",
     "preview": "vite preview",
     "export:diagram-png": "node scripts/export-process-diagram-png.mjs"
   },
@@ -15,14 +17,18 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "playwright": "^1.59.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
     "typescript": "~5.9.3",
     "vite": "^8.0.1"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "framer-motion": "^12.38.0",
+    "@supabase/supabase-js": "^2.106.1",
+    "@types/d3": "^7.4.3",
+    "d3": "^7.9.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.15.1"
   }
 }
