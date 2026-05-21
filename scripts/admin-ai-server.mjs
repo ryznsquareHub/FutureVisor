@@ -77,6 +77,39 @@ const adminGate = (req, res, next) => {
   next()
 }
 
+app.post('/api/ai/today-summary', adminGate, async (req, res) => {
+  try {
+    const data = req.body || {}
+    const prompt = `당신은 그로스 마케팅 데이터 분석가입니다. 아래는 FutureVisor 랜딩 사이트 (futurevisor.co.kr — 기업 맞춤 자동화 시스템 구축 B2B 서비스)의 **오늘**(${data.dateLabel ?? '날짜 미상'} 한국시각, 현재 ${data.elapsedHours ?? '?'}시간 경과 / 24시간 중) 진행 중 트래픽 집계입니다.
+
+다음 형식으로 마크다운, 한국어로 답해주세요:
+
+### 한 줄 요약
+(현재 시각까지 방문자/PV/체류시간/바운스 + 어제 같은 시간대 대비가 데이터에 있으면 그 비교까지 한 문장)
+
+### 지금까지의 시그널
+- (오전/오후 어느 시간대에 유입이 몰렸는지)
+- (어디서 와서, 어떤 페이지를 봤는지)
+- (체류·바운스 품질)
+
+### 남은 시간 액션
+- (오늘 안에 시도할 수 있는 트래픽 부스팅 액션 1개)
+- (지금 들어온 방문자 유형 기반의 후속 조치 1개)
+
+오늘은 **진행 중인 부분 데이터**임을 분석에 명시적으로 반영하세요. 어제와 비교할 수 있으면 "어제 같은 시간대 대비 X%" 같은 표현을 사용. 데이터가 너무 적으면(예: PV 5 미만) "데이터 부족" 솔직히 적고 어떤 신호가 더 필요한지 말씀해주세요.
+
+데이터:
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``
+    const md = await callClaude(prompt)
+    res.json({ markdown: md })
+  } catch (e) {
+    console.error('[fv-ai] today-summary 에러:', e)
+    res.status(500).json({ error: String(e?.message || e) })
+  }
+})
+
 app.post('/api/ai/yesterday-summary', adminGate, async (req, res) => {
   try {
     const data = req.body || {}

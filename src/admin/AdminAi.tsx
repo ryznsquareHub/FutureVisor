@@ -7,7 +7,7 @@ type Props = {
   rangeDays: number
 }
 
-type Mode = 'yesterday-summary' | 'channel-compare'
+type Mode = 'today-summary' | 'yesterday-summary' | 'channel-compare'
 
 // 로컬 dev에서는 localhost, 프로덕션에서는 Tailscale Serve로 노출된 HTTPS 엔드포인트.
 // Tailscale이 깔려 있고 사용자 PC에서 `tailscale serve --bg 3001`이 떠 있어야 동작.
@@ -89,6 +89,81 @@ function topN<T>(arr: T[], key: (x: T) => string, n: number) {
     .sort((a, b) => b[1] - a[1])
     .slice(0, n)
     .map(([k, v]) => ({ key: k, count: v }))
+}
+
+function rowsInRange(rows: PageView[], from: Date, to: Date) {
+  return rows.filter((r) => {
+    const t = new Date(r.entered_at).getTime()
+    return t >= from.getTime() && t < to.getTime()
+  })
+}
+
+function hourlyKst(rows: PageView[]) {
+  const out: { hour: number; count: number }[] = []
+  for (let h = 0; h < 24; h++) {
+    const c = rows.filter((r) => {
+      const kstHour = Number(
+        new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Seoul',
+          hour: '2-digit',
+          hour12: false,
+        }).format(new Date(r.entered_at)),
+      )
+      return kstHour === h
+    }).length
+    if (c > 0) out.push({ hour: h, count: c })
+  }
+  return out
+}
+
+function buildTodaySummaryPayload(rows: PageView[]) {
+  const now = new Date()
+  const todayKst0 = startOfKstDay(now)
+  const yesterdayKst0 = new Date(todayKst0.getTime() - 24 * 60 * 60 * 1000)
+  const today = rowsInRange(rows, todayKst0, now)
+
+  // 어제 같은 시각까지(00:00~now-24h)의 같은 시간대 누적 — 비교용
+  const yesterdaySameWindowEnd = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  const yesterdaySameWindow = rowsInRange(rows, yesterdayKst0, yesterdaySameWindowEnd)
+
+  const kstNowParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(now)
+  const kstHourNow = Number(kstNowParts.find((p) => p.type === 'hour')!.value)
+  const kstMinNow = Number(kstNowParts.find((p) => p.type === 'minute')!.value)
+  const elapsedHours = Math.round((kstHourNow + kstMinNow / 60) * 10) / 10
+
+  const dateLabel = `${new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+  }).format(todayKst0)} ${String(kstHourNow).padStart(2, '0')}:${String(kstMinNow).padStart(2, '0')} 기준`
+
+  return {
+    dateLabel,
+    elapsedHours,
+    today: {
+      basics: aggregateBasics(today),
+      topPaths: topN(today, (r) => r.path + (r.search || ''), 6),
+      topSources: topN(today, classifySource, 6),
+      topCountries: topN(today, (r) => `${r.country || '미확인'}/${r.city || '-'}`, 5),
+      devices: topN(today, (r) => r.device_type || 'unknown', 4),
+      hourlyDistribution: hourlyKst(today),
+    },
+    yesterdaySameWindow: {
+      label: `어제 0시 ~ 어제 ${String(kstHourNow).padStart(2, '0')}:${String(kstMinNow).padStart(2, '0')}`,
+      basics: aggregateBasics(yesterdaySameWindow),
+      topSources: topN(yesterdaySameWindow, classifySource, 5),
+    },
+  }
 }
 
 function buildYesterdayPayload(rows: PageView[]) {
@@ -261,9 +336,11 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
     setMarkdown(null)
     try {
       const body =
-        which === 'yesterday-summary'
-          ? buildYesterdayPayload(rows)
-          : buildChannelPayload(rows, rangeDays)
+        which === 'today-summary'
+          ? buildTodaySummaryPayload(rows)
+          : which === 'yesterday-summary'
+            ? buildYesterdayPayload(rows)
+            : buildChannelPayload(rows, rangeDays)
 
       const res = await fetch(`${AI_SERVER}/api/ai/${which}`, {
         method: 'POST',
@@ -317,9 +394,16 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
 
       <div className="flex flex-wrap gap-2">
         <button
-          onClick={() => run('yesterday-summary')}
+          onClick={() => run('today-summary')}
           disabled={loading}
           className="rounded-lg bg-brand-600 px-3 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-50"
+        >
+          오늘 트래픽 요약
+        </button>
+        <button
+          onClick={() => run('yesterday-summary')}
+          disabled={loading}
+          className="rounded-lg border border-brand-600 bg-white px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50 disabled:opacity-50"
         >
           어제 트래픽 요약
         </button>
@@ -337,7 +421,13 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
           <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-brand-500" />
           Claude가 분석 중…{' '}
           <span className="text-xs">
-            (5~20초 소요 · {mode === 'yesterday-summary' ? '어제 데이터' : '채널 데이터'} 처리 중)
+            (5~20초 소요 ·{' '}
+            {mode === 'today-summary'
+              ? '오늘 데이터'
+              : mode === 'yesterday-summary'
+                ? '어제 데이터'
+                : '채널 데이터'}{' '}
+            처리 중)
           </span>
         </div>
       )}
