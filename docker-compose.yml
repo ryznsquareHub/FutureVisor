@@ -13,7 +13,7 @@ services:
   fv-ai:
     build:
       context: .
-      dockerfile: Dockerfile.ai
+      dockerfile: ai-server.Dockerfile
     container_name: fv-ai-server
     restart: unless-stopped
     ports:
