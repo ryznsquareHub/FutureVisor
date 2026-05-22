@@ -9,7 +9,6 @@
     "build": "tsc && vite build",
     "build:doppler": "doppler run -- npm run build",
     "preview": "vite preview",
-    "ai:server": "node scripts/admin-ai-server.mjs",
     "export:diagram-png": "node scripts/export-process-diagram-png.mjs"
   },
   "devDependencies": {
@@ -17,8 +16,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
     "playwright": "^1.59.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
