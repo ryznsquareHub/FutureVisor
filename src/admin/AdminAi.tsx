@@ -13,6 +13,7 @@ type Mode =
   | 'yesterday-summary'
   | 'today-vs-yesterday'
   | 'weekly-trend'
+  | 'monthly-trend'
   | 'channel-compare'
 
 // 로컬 dev에서는 localhost, 프로덕션에서는 Tailscale Serve로 노출된 HTTPS 엔드포인트.
@@ -169,6 +170,114 @@ function buildTodaySummaryPayload(rows: PageView[]) {
       basics: aggregateBasics(yesterdaySameWindow),
       topSources: topN(yesterdaySameWindow, classifySource, 5),
     },
+  }
+}
+
+function buildMonthlyTrendPayload(rows: PageView[]) {
+  const now = new Date()
+  const todayKst0 = startOfKstDay(now)
+  const monthStart = new Date(todayKst0.getTime() - 30 * 24 * 60 * 60 * 1000)
+  const prevMonthStart = new Date(todayKst0.getTime() - 60 * 24 * 60 * 60 * 1000)
+
+  const thisMonthRows = rowsInRange(rows, monthStart, todayKst0)
+  const prevMonthRows = rowsInRange(rows, prevMonthStart, monthStart)
+
+  const dayFmt = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+  })
+  const shortFmt = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    month: '2-digit',
+    day: '2-digit',
+  })
+
+  // 일자별 간단 수치 (30일)
+  const daysWithData = new Set<string>()
+  const dailyCompact: { date: string; visitors: number; pageViews: number }[] = []
+  for (let i = 29; i >= 0; i--) {
+    const dayStart = new Date(todayKst0.getTime() - (i + 1) * 24 * 60 * 60 * 1000)
+    const dayEnd = new Date(todayKst0.getTime() - i * 24 * 60 * 60 * 1000)
+    const dayRows = rowsInRange(rows, dayStart, dayEnd)
+    if (dayRows.length > 0) daysWithData.add(dayStart.toISOString().slice(0, 10))
+    dailyCompact.push({
+      date: shortFmt.format(dayStart),
+      visitors: new Set(dayRows.map((r) => r.visitor_id)).size,
+      pageViews: dayRows.length,
+    })
+  }
+
+  // 주차별 분해 (오래된 주 → 최신 주, 7일 단위 4~5묶음)
+  const weeklyBreakdown: Array<{
+    week: string
+    visitors: number
+    pageViews: number
+    sessions: number
+    avgDurationSec: number
+    bounceRate: number
+    topSources: { key: string; count: number }[]
+  }> = []
+  for (let w = 4; w >= 0; w--) {
+    const wStart = new Date(todayKst0.getTime() - (w + 1) * 7 * 24 * 60 * 60 * 1000)
+    const wEnd = new Date(todayKst0.getTime() - w * 7 * 24 * 60 * 60 * 1000)
+    if (wEnd.getTime() <= monthStart.getTime()) continue
+    const clampedStart = wStart.getTime() < monthStart.getTime() ? monthStart : wStart
+    const wRows = rowsInRange(rows, clampedStart, wEnd)
+    const b = aggregateBasics(wRows)
+    weeklyBreakdown.push({
+      week: `${shortFmt.format(clampedStart)} ~ ${shortFmt.format(new Date(wEnd.getTime() - 24 * 60 * 60 * 1000))}`,
+      visitors: b.visitors,
+      pageViews: b.pageViews,
+      sessions: b.sessions,
+      avgDurationSec: b.avgDurationSec,
+      bounceRate: b.bounceRate,
+      topSources: topN(wRows, classifySource, 3),
+    })
+  }
+
+  // 요일 패턴 (30일)
+  const dowFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', weekday: 'short' })
+  const dowMap: Record<string, number> = {
+    Sun: 0,
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
+  }
+  const isoFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' })
+  const dowAgg: Record<number, { pv: number; days: Set<string> }> = {}
+  for (const r of thisMonthRows) {
+    const d = new Date(r.entered_at)
+    const dow = dowMap[dowFmt.format(d)] ?? 0
+    if (!dowAgg[dow]) dowAgg[dow] = { pv: 0, days: new Set() }
+    dowAgg[dow].pv++
+    dowAgg[dow].days.add(isoFmt.format(d))
+  }
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토']
+  const dayOfWeekPattern = dayNames.map((name, i) => {
+    const agg = dowAgg[i]
+    const dc = agg?.days.size ?? 0
+    return {
+      dayOfWeek: name,
+      sampleDays: dc,
+      avgPv: agg && dc > 0 ? Math.round((agg.pv / dc) * 10) / 10 : 0,
+    }
+  })
+
+  return {
+    rangeLabel: `최근 30일 (${dayFmt.format(monthStart)} ~ ${dayFmt.format(new Date(todayKst0.getTime() - 24 * 60 * 60 * 1000))})`,
+    dataCompleteness: `${daysWithData.size}/30`,
+    thisMonthTotals: aggregateBasics(thisMonthRows),
+    previousMonthTotals: prevMonthRows.length > 0 ? aggregateBasics(prevMonthRows) : null,
+    weeklyBreakdown,
+    dailyCompact,
+    dayOfWeekPattern,
+    topSourcesMonth: topN(thisMonthRows, classifySource, 8),
+    topPathsMonth: topN(thisMonthRows, (r) => r.path + (r.search || ''), 8),
   }
 }
 
@@ -493,9 +602,11 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
     setMarkdown(null)
     try {
       let workRows = rows
-      // 주간 트렌드는 14일치 데이터가 필요하므로 현재 필터 범위가 부족하면 별도 fetch
-      if (which === 'weekly-trend' && rangeDays < 14 && supabase) {
-        const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
+      // 트렌드 분석은 더 긴 윈도우가 필요 — 현재 필터 범위가 부족하면 별도 fetch
+      const needDays =
+        which === 'weekly-trend' ? 14 : which === 'monthly-trend' ? 60 : 0
+      if (needDays > 0 && rangeDays < needDays && supabase) {
+        const since = new Date(Date.now() - needDays * 24 * 60 * 60 * 1000).toISOString()
         const { data, error } = await supabase.rpc('fv_admin_page_views', {
           p_token: adminToken,
           p_since: since,
@@ -514,7 +625,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
               ? buildTodayVsYesterdayPayload(workRows)
               : which === 'weekly-trend'
                 ? buildWeeklyTrendPayload(workRows)
-                : buildChannelPayload(workRows, rangeDays)
+                : which === 'monthly-trend'
+                  ? buildMonthlyTrendPayload(workRows)
+                  : buildChannelPayload(workRows, rangeDays)
 
       const res = await fetch(`${AI_SERVER}/api/ai/${which}`, {
         method: 'POST',
@@ -596,6 +709,13 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
           7일 트렌드 분석
         </button>
         <button
+          onClick={() => run('monthly-trend')}
+          disabled={loading}
+          className="rounded-lg border border-violet-700 bg-violet-600 px-3 py-2 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
+        >
+          한 달 트렌드 분석
+        </button>
+        <button
           onClick={() => run('channel-compare')}
           disabled={loading}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
@@ -618,7 +738,9 @@ export function AdminAi({ rows, adminToken, rangeDays }: Props) {
                   ? '오늘 ↔ 어제 비교'
                   : mode === 'weekly-trend'
                     ? '7일 트렌드'
-                    : '채널 데이터'}{' '}
+                    : mode === 'monthly-trend'
+                      ? '30일 트렌드'
+                      : '채널 데이터'}{' '}
             처리 중)
           </span>
         </div>

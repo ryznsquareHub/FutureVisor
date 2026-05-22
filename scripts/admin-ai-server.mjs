@@ -77,6 +77,56 @@ const adminGate = (req, res, next) => {
   next()
 }
 
+app.post('/api/ai/monthly-trend', adminGate, async (req, res) => {
+  try {
+    const data = req.body || {}
+    const prompt = `당신은 그로스 마케팅 데이터 분석가입니다. 아래는 FutureVisor 랜딩 사이트 (futurevisor.co.kr — 기업 맞춤 자동화 시스템 구축 B2B 서비스)의 **최근 30일 트렌드** 데이터입니다.
+
+페이로드 구조:
+- **weeklyBreakdown**: 최근 30일을 주 단위로 쪼갠 묶음 (가장 오래된 주 → 최신 주). 각 주의 방문자/PV/세션/평균체류/바운스/상위 유입
+- **dailyCompact**: 30일 일자별 간단 수치 (날짜·방문자·PV) — 스파이크/공백일 파악용
+- **thisMonthTotals**: 최근 30일 누적
+- **previousMonthTotals**: 그 전 30일 누적 (없으면 null)
+- **dayOfWeekPattern**: 요일별 평균 PV
+- **topSourcesMonth / topPathsMonth**: 30일 상위 유입·페이지
+- **dataCompleteness**: 데이터가 있는 일자 수 / 30
+
+다음 형식으로 마크다운, 한국어로 답해주세요:
+
+### 한 줄 요약
+(월간 추세 한 문장 — "지난 달 대비 ±X%", 상승/하락/정체, 가장 큰 변화)
+
+### 주차별 추이
+| 주차 | 방문자 | PV | 평균 체류 | 바운스 | 핵심 유입 |
+|---|---|---|---|---|---|
+| (weeklyBreakdown 각 주) | ... | ... | ... | ... | ... |
+
+### 한 달 흐름 진단
+- **성장 궤적**: (4주간 우상향/우하향/정체/롤러코스터 — 구체 수치로)
+- **이번 달 vs 지난 달**: (있다면 비교, 없으면 명시)
+- **요일 패턴**: (어느 요일이 꾸준히 강한지 — B2B 주중 패턴 확인)
+- **유입 채널 변화**: (한 달간 Direct/검색/SNS 비중이 어떻게 움직였는지)
+- **스파이크/공백**: (dailyCompact에서 튀는 날·0인 날이 있으면 짚기)
+
+### 다음 달 전략 (우선순위)
+- (가장 임팩트 큰 액션 1개 — 데이터 근거 명확히)
+- (한 달 안에 검증할 가설 1개)
+- (집중 모니터링할 지표 1개)
+
+dataCompleteness가 30/30이 아니면 명시하고 신중히. 전체 PV가 100 미만이면 "월간 트렌드로 단정하기엔 표본 부족" 솔직히 적되, 그 안에서 읽을 수 있는 초기 신호는 짚어주세요. 데이터에 없는 사실 지어내지 마세요.
+
+데이터:
+\`\`\`json
+${JSON.stringify(data, null, 2)}
+\`\`\``
+    const md = await callClaude(prompt)
+    res.json({ markdown: md })
+  } catch (e) {
+    console.error('[fv-ai] monthly-trend 에러:', e)
+    res.status(500).json({ error: String(e?.message || e) })
+  }
+})
+
 app.post('/api/ai/weekly-trend', adminGate, async (req, res) => {
   try {
     const data = req.body || {}
